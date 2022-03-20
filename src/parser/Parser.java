@@ -1,0 +1,260 @@
+package parser;
+
+import nodes.*;
+import nodes.expression.PatternConstants;
+import nodes.expression.NodeExpression;
+import nodes.expression.indivisible.NodeIdentifier;
+import nodes.expression.indivisible.NodeNumber;
+import nodes.expression.binar.*;
+import nodes.expression.unar.NodeUnaryExpression;
+import nodes.io.NodeGimmeh;
+import nodes.io.NodeVisible;
+
+import java.util.InputMismatchException;
+
+public class Parser {
+    private final String rawProgram;
+    private int currPos = 0;
+    // "IT" in LOLCODE, but also implicitly used in "O RLY?"
+    private NodeExpression lastExpressionToken;
+
+    public Parser(final String rawProgram) {
+        this.rawProgram = rawProgram;
+    }
+
+    public Node parse() {
+        if (!isParse("HAI", false, true)) {
+            throw new InputMismatchException("\"HAI\" is missing.");
+        }
+        parse("HAI", false, true);
+        NodeNumber version = parseNumber();
+        NodeRoot root = new NodeRoot(String.valueOf(version.getValue()));
+
+        while (currPos < rawProgram.length()) {
+            if (isParse("KTHXBYE", true, false)) {
+                return root;
+            }
+            Node statement = tokenizeStatementAndProceed();
+            root.addChild(statement);
+        }
+        throw new InputMismatchException("\"KTHXBYE\" is missing.");
+    }
+
+    private Node tokenizeStatementAndProceed() {
+        /*
+        if (isParse("O RLY?", true, true)) {
+            parse("O RLY?", true, true);
+            return null;
+        }
+         */
+        if (isParse("GIMMEH", true, true)) {
+            parse("GIMMEH", true, true);
+            NodeIdentifier identifier = parseIdentifier();
+            lastExpressionToken = identifier;
+            return new NodeGimmeh(identifier);
+        }
+        if (isParse("VISIBLE", true, true)) {
+            parse("VISIBLE", true, true);
+            NodeExpression expression = parseExpression();
+            lastExpressionToken = expression;
+            return new NodeVisible(expression);
+        }
+        NodeIdentifier identifier = parseIdentifier();
+        lastExpressionToken = identifier;
+        if (isParse("R", true, true)) {
+            parse("R", true, true);
+            return parseAssignation(identifier);
+        }
+        throw new InputMismatchException(
+                "Unacceptable symbol \"" + rawProgram.charAt(currPos) + "\" at position " + currPos + "."
+        );
+    }
+
+    private NodeExpression parseExpression() {
+        // ===== UNARY =====
+        /*if (isParse("NOT", true, true)) {
+            parse("NOT", true, true);
+            return parseExpression(new TokenNot(null));
+        }*/
+        // ===== BINARY =====
+        // --- math --
+        if (isParse(PatternConstants.SUM_OF, true, true)) {
+            parse(PatternConstants.SUM_OF, true, true);
+            return parseExpression(new NodeSumOf(null, null));
+        }
+        if (isParse(PatternConstants.DIFF_OF, true, true)) {
+            parse(PatternConstants.DIFF_OF, true, true);
+            return parseExpression(new NodeDiffOf(null, null));
+        }
+        if (isParse(PatternConstants.PRODUKT_OF, true, true)) {
+            parse(PatternConstants.PRODUKT_OF, true, true);
+            return parseExpression(new NodeProduktOf(null, null));
+        }
+        if (isParse(PatternConstants.QUOSHUNT_OF, true, true)) {
+            parse(PatternConstants.QUOSHUNT_OF, true, true);
+            return parseExpression(new NodeQuoshuntOf(null, null));
+        }
+        /* todo: more operators. Below and above. And don't forget to replace strings with PatternConstants
+        if (isParse("MOD OF", true, true)) {
+            parse("", true, true);
+            return null;
+        }
+        // --- logic ---
+        if (isParse("BIGGER OF", true, true)) {
+            parse("", true, true);
+            return null;
+        }
+        if (isParse("SMALLER OF", true, true)) {
+            parse("", true, true);
+            return null;
+        }
+        if (isParse("BOTH OF", true, true)) {
+            parse("", true, true);
+            return null;
+        }
+        if (isParse("EITHER OF", true, true)) {
+            parse("", true, true);
+            return null;
+        }
+        if (isParse("WON OF", true, true)) {
+            parse("", true, true);
+            return null;
+        }
+        if (isParse("ALL OF", true, true)) {
+            parse("", true, true);
+            return null;
+        }
+        if (isParse("ANY OF", true, true)) {
+            parse("", true, true);
+            return null;
+        }
+        if (isParse("BOTH SAEM", true, true)) {
+            parse("", true, true);
+            return null;
+        }
+        if (isParse("DIFFRINT", true, true)) {
+            parse("", true, true);
+            return null;
+        }
+         */
+        int fakeWhitespacesSkipLen = 0;
+        while (Character.isWhitespace(rawProgram.charAt(currPos + fakeWhitespacesSkipLen))) {
+            fakeWhitespacesSkipLen++;
+        }
+        if (
+                Character.isDigit(rawProgram.charAt(currPos + fakeWhitespacesSkipLen))
+                        || rawProgram.charAt(currPos + fakeWhitespacesSkipLen) == '.'
+        ) {
+            return parseNumber();
+        }
+
+        if (Character.isLetter(rawProgram.charAt(currPos + fakeWhitespacesSkipLen))) {
+            return parseIdentifier();
+        }
+
+        throw new InputMismatchException(
+                "Unable to parse an expression starting with \""
+                        + rawProgram.charAt(currPos) + "\" at position: " + currPos + "."
+        );
+    }
+
+    private NodeExpression parseExpression(NodeBinaryExpression outerExpression) {
+        outerExpression.setLeftOperand(parseExpression());
+        if (isParse("AN", true, true)) {
+            parse("AN", true, true);
+        } else if (!outerExpression.isANIgnorable()) {
+            throw new InputMismatchException("\"AN\" is missing in the expression.");
+        }
+        outerExpression.setRightOperand(parseExpression());
+        return outerExpression;
+    }
+
+    private NodeExpression parseExpression(NodeUnaryExpression outerExpression) {
+        // todo: unary expressions
+        return null;
+    }
+
+    private NodeNumber parseNumber() {
+        consumeWhitespaces();
+        int fromPos = currPos;
+        boolean alreadyHadDot = false;
+        while (true) {
+            if (Character.isDigit(rawProgram.charAt(currPos))) {
+                currPos++;
+                continue;
+            }
+            if (rawProgram.charAt(currPos) == '.') {
+                if (alreadyHadDot) {
+                    throw new InputMismatchException(
+                            "A number can't have multiple dots. Position: " + currPos + "."
+                    );
+                }
+                alreadyHadDot = true;
+                currPos++;
+                continue;
+            }
+            break;
+        }
+        return new NodeNumber(Double.parseDouble(rawProgram.substring(fromPos, currPos)));
+    }
+
+    private NodeIdentifier parseIdentifier() {
+        consumeWhitespaces();
+        int fromPos = currPos;
+        if (Character.isLetter(rawProgram.charAt(currPos))) {
+            currPos++;
+        } else {
+            throw new InputMismatchException(
+                    "Identifiers cannot start with something except letters. Met: " + rawProgram.charAt(currPos) + "."
+            );
+        }
+        while (Character.isLetterOrDigit(rawProgram.charAt(currPos))) {
+            currPos++;
+        }
+        if (Character.isWhitespace(rawProgram.charAt(currPos))) {
+            return new NodeIdentifier(rawProgram.substring(fromPos, currPos));
+        }
+        throw new InputMismatchException("Vars cannot contain such symbols: " + rawProgram.charAt(currPos) + ".");
+    }
+
+    private NodeAssignation parseAssignation(NodeIdentifier identifier) {
+        return new NodeAssignation(identifier, parseExpression());
+    }
+
+    private boolean isParse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {
+        int leftWhitespacesAmt = 0;
+        while (Character.isWhitespace(rawProgram.charAt(currPos + leftWhitespacesAmt))) {
+            leftWhitespacesAmt++;
+        }
+
+        if (requireLeftWhitespaces && leftWhitespacesAmt == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < text.length(); i++) {
+            if (rawProgram.charAt(i + currPos + leftWhitespacesAmt) != text.charAt(i)) {
+                return false;
+            }
+        }
+
+        return !requireRightWhitespaces
+                || Character.isWhitespace(rawProgram.charAt(text.length() + leftWhitespacesAmt + currPos));
+    }
+
+    private void parse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {
+        if (isParse(text, requireLeftWhitespaces, requireRightWhitespaces)) {
+            currPos += consumeWhitespaces() + text.length();
+            return;
+        }
+        throw new InputMismatchException("Parsing error.");
+    }
+
+    private int consumeWhitespaces() {
+        int consumedAmt = 0;
+        while (Character.isWhitespace(rawProgram.charAt(currPos))) {
+            consumedAmt++;
+            currPos++;
+        }
+        return consumedAmt;
+    }
+}
