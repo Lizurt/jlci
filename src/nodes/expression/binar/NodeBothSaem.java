@@ -1,6 +1,9 @@
 package nodes.expression.binar;
 
 import nodes.Node;
+import nodes.expression.PatternConstants;
+
+import java.util.HashMap;
 
 public class NodeBothSaem extends NodeBinaryExpression {
     public NodeBothSaem(Node leftOperand, Node rightOperand) {
@@ -9,6 +12,6 @@ public class NodeBothSaem extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return "BOTH SEAM";
+        return PatternConstants.parserPred.get(PatternConstants.BOTH_SAEM);
     }
 }

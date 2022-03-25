@@ -1,6 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
+import nodes.expression.PatternConstants;
 
 public class NodeModOf extends NodeBinaryExpression {
     public NodeModOf(Node leftOperand, Node rightOperand) {
@@ -9,6 +10,6 @@ public class NodeModOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return "MOD OF";
+        return PatternConstants.parserPred.get(PatternConstants.MOD_OF);
     }
 }

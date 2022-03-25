@@ -1,6 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
+import nodes.expression.PatternConstants;
 
 public class NodeEitherOf extends NodeBinaryExpression {
     public NodeEitherOf(Node leftOperand, Node rightOperand) {
@@ -9,6 +10,6 @@ public class NodeEitherOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return "EITHER OF";
+        return PatternConstants.parserPred.get(PatternConstants.EITHER_OF);
     }
 }

@@ -132,7 +132,7 @@ public class Parser {
         }
         if (isParse(PatternConstants.DIFFRINT, true, true)) {
             parse(PatternConstants.DIFFRINT, true, true);
-            return parseExpression(new NodeDifferent(null, null));
+            return parseExpression(new NodeDifferInt(null, null));
         }
 
         int fakeWhitespacesSkipLen = 0;

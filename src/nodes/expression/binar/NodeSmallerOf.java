@@ -1,6 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
+import nodes.expression.PatternConstants;
 
 public class NodeSmallerOf extends NodeBinaryExpression {
     public NodeSmallerOf(Node leftOperand, Node rightOperand) {
@@ -9,6 +10,6 @@ public class NodeSmallerOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return "SMALLER OF";
+        return PatternConstants.parserPred.get(PatternConstants.SMALLER_OF);
     }
 }

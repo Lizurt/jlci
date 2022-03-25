@@ -1,6 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
+import nodes.expression.PatternConstants;
 
 public class NodeWonOf extends NodeBinaryExpression {
     public NodeWonOf(Node leftOperand, Node rightOperand) {
@@ -9,6 +10,6 @@ public class NodeWonOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return "WON OF";
+        return PatternConstants.parserPred.get(PatternConstants.WON_OF);
     }
 }

@@ -1,6 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
+import nodes.expression.PatternConstants;
 
 public class NodeDiffOf extends NodeBinaryExpression {
     public NodeDiffOf(Node leftSide, Node rightSide) {
@@ -9,6 +10,7 @@ public class NodeDiffOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return "DIFF OF";
+        return PatternConstants.parserPred.get(PatternConstants.DIFF_OF);
+
     }
 }

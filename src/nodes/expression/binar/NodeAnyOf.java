@@ -1,6 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
+import nodes.expression.PatternConstants;
 
 public class NodeAnyOf extends NodeBinaryExpression {
     public NodeAnyOf(Node leftOperand, Node rightOperand) {
@@ -9,6 +10,6 @@ public class NodeAnyOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return "ANY OF";
+        return PatternConstants.parserPred.get(PatternConstants.ANY_OF);
     }
 }

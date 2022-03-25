@@ -1,6 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
+import nodes.expression.PatternConstants;
 
 public class NodeBothOf extends NodeBinaryExpression {
     public NodeBothOf(Node leftOperand, Node rightOperand) {
@@ -9,6 +10,6 @@ public class NodeBothOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return "BOTH OF";
+        return PatternConstants.parserPred.get(PatternConstants.BOTH_OF);
     }
 }
