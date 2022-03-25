@@ -9,6 +9,6 @@ public class NodeBothSaem extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return "BOTH SEAM OF";
+        return "BOTH SEAM";
     }
 }

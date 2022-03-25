@@ -9,6 +9,6 @@ public class NodeDifferent extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return "DIFFERENT OF";
+        return "DIFFERENT";
     }
 }

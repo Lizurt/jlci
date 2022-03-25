@@ -12,7 +12,7 @@ public abstract class PatternConstants {
     public static final String BOTH_OF = "BOTH OF";
     public static final String EITHER_OF = "EITHER OF";
     public static final String WON_OF = "WON OF";
-    public static final String ALL_OF = "ANY OF";
+    public static final String ALL_OF = "ALL OF";
     public static final String ANY_OF = "ANY OF";
     public static final String BOTH_SAEM = "BOTH SAEM";
     public static final String DIFFRINT = "DIFFRINT";
