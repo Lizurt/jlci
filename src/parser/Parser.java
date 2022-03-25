@@ -94,49 +94,51 @@ public class Parser {
             parse(PatternConstants.QUOSHUNT_OF, true, true);
             return parseExpression(new NodeQuoshuntOf(null, null));
         }
-        /* todo: more operators. Below and above. And don't forget to replace strings with PatternConstants
-        if (isParse("MOD OF", true, true)) {
-            parse("", true, true);
-            return null;
+        if (isParse(PatternConstants.MOD_OF, true, true)) {
+            parse(PatternConstants.MOD_OF, true, true);
+            return parseExpression(new NodeQuoshuntOf(null, null));
         }
-        // --- logic ---
-        if (isParse("BIGGER OF", true, true)) {
-            parse("", true, true);
-            return null;
+        if (isParse(PatternConstants.BIGGER_OF, true, true)) {
+            parse(PatternConstants.BIGGER_OF, true, true);
+            return parseExpression(new NodeQuoshuntOf(null, null));
         }
-        if (isParse("SMALLER OF", true, true)) {
-            parse("", true, true);
-            return null;
+        if (isParse(PatternConstants.SMALLER_OF, true, true)) {
+            parse(PatternConstants.SMALLER_OF, true, true);
+            return parseExpression(new NodeQuoshuntOf(null, null));
         }
-        if (isParse("BOTH OF", true, true)) {
-            parse("", true, true);
-            return null;
+        if (isParse(PatternConstants.BOTH_OF, true, true)) {
+            parse(PatternConstants.BOTH_OF, true, true);
+            return parseExpression(new NodeQuoshuntOf(null, null));
         }
-        if (isParse("EITHER OF", true, true)) {
-            parse("", true, true);
-            return null;
+        if (isParse(PatternConstants.BOTH_OF, true, true)) {
+            parse(PatternConstants.BOTH_OF, true, true);
+            return parseExpression(new NodeQuoshuntOf(null, null));
         }
-        if (isParse("WON OF", true, true)) {
-            parse("", true, true);
-            return null;
+        if (isParse(PatternConstants.EITHER_OF, true, true)) {
+            parse(PatternConstants.EITHER_OF, true, true);
+            return parseExpression(new NodeQuoshuntOf(null, null));
         }
-        if (isParse("ALL OF", true, true)) {
-            parse("", true, true);
-            return null;
+        if (isParse(PatternConstants.WON_OF, true, true)) {
+            parse(PatternConstants.WON_OF, true, true);
+            return parseExpression(new NodeQuoshuntOf(null, null));
         }
-        if (isParse("ANY OF", true, true)) {
-            parse("", true, true);
-            return null;
+        if (isParse(PatternConstants.ALL_OF, true, true)) {
+            parse(PatternConstants.ALL_OF, true, true);
+            return parseExpression(new NodeQuoshuntOf(null, null));
         }
-        if (isParse("BOTH SAEM", true, true)) {
-            parse("", true, true);
-            return null;
+        if (isParse(PatternConstants.ANY_OF, true, true)) {
+            parse(PatternConstants.ANY_OF, true, true);
+            return parseExpression(new NodeQuoshuntOf(null, null));
         }
-        if (isParse("DIFFRINT", true, true)) {
-            parse("", true, true);
-            return null;
+        if (isParse(PatternConstants.BOTH_SAEM, true, true)) {
+            parse(PatternConstants.BOTH_SAEM, true, true);
+            return parseExpression(new NodeQuoshuntOf(null, null));
         }
-         */
+        if (isParse(PatternConstants.DIFFRINT, true, true)) {
+            parse(PatternConstants.DIFFRINT, true, true);
+            return parseExpression(new NodeQuoshuntOf(null, null));
+        }
+
         int fakeWhitespacesSkipLen = 0;
         while (Character.isWhitespace(rawProgram.charAt(currPos + fakeWhitespacesSkipLen))) {
             fakeWhitespacesSkipLen++;
