@@ -6,6 +6,7 @@ import nodes.expression.NodeExpression;
 import nodes.expression.indivisible.NodeIdentifier;
 import nodes.expression.indivisible.NodeNumber;
 import nodes.expression.binar.*;
+import nodes.expression.unar.NodeNot;
 import nodes.expression.unar.NodeUnaryExpression;
 import nodes.io.*;
 
@@ -41,48 +42,79 @@ public class Parser {
     private Node tokenizeStatementAndProceed() {
         if (isParse("O RLY?", true, true)) {
             parse("O RLY?", true, true);
-            Node node = new NodeORly(lastExpressionToken);
+            NodeORly nodeORly = new NodeORly();
+            nodeORly.setCondition(lastExpressionToken);
             if (isParse("YA RLY", true, true)) {
                 parse("YA RLY", true, true);
-                Node child = tokenizeStatementAndProceed();
-                node.addChild(new NodeYaRly(child));
+                NodeYaRly nodeYaRly = new NodeYaRly();
+                nodeORly.setNodeYaRly(nodeYaRly);
+                while (true) {
+                    if (isParse("NO WAI", true, true)) {
+                        break;
+                    }
+                    if (isParse("OIC", true, true)) {
+                        break;
+                    }
+                    Node childStatement = tokenizeStatementAndProceed();
+                    nodeYaRly.addChild(childStatement);
+                }
             }
             if (isParse("NO WAI", true, true)) {
                 parse("NO WAI", true, true);
-                Node child = tokenizeStatementAndProceed();
-                node.addChild(new NodeNoWai(child));
+                NodeNoWai nodeNoWai = new NodeNoWai();
+                nodeORly.setNodeNoWai(nodeNoWai);
+                while (true) {
+                    if (isParse("OIC", true, true)) {
+                        break;
+                    }
+                    Node childStatement = tokenizeStatementAndProceed();
+                    nodeNoWai.addChild(childStatement);
+                }
             }
             if (isParse("OIC", true, true)) {
                 parse("OIC", true, true);
-                node.addChild(new NodeOic());
-                return node;
+                return nodeORly;
             }
-            return node;
+            throw new InputMismatchException("Couldn't find OIC node at position: " + currPos + ".");
         }
         if (isParse("IM IN YR", true, true)) {
             parse("IM IN YR", true, true);
-            NodeExpression expression = parseExpression();
-            lastExpressionToken = expression;
-            Node node = new NodeImInYr(expression);
-            Node child = tokenizeStatementAndProceed();
-            node.addChild(child);
-            if (isParse("YR", true, true)) {
-                parse("YR", true, true);
-                Node nodeYr = new NodeYr();
-                child = tokenizeStatementAndProceed();
-                nodeYr.addChild(child);
-                node.addChild(nodeYr);
+            NodeImInYr nodeImInYr = new NodeImInYr();
+            NodeIdentifier loopName = parseIdentifier();
+            nodeImInYr.setLoopName(loopName);
+            Node afterLoopAction = tokenizeStatementAndProceed();
+            nodeImInYr.setAfterLoopAction(afterLoopAction);
+            if (!isParse("YR", true, true)) {
+                throw new InputMismatchException("Missing \"YR\" section in a loop at position: " + currPos + ".");
             }
-            expression = parseExpression();
-            lastExpressionToken = expression;
-            node.addChild(lastExpressionToken);
-            if (isParse("IM OUTTA YR", true, true)) {
-                parse("IM OUTTA YR", true, true);
-                expression = parseExpression();
-                lastExpressionToken = expression;
-                node.addChild(new NodeImInYr(expression));
-                return node;
+            parse("YR", true, true);
+            Node varsInitNode = tokenizeStatementAndProceed();
+            nodeImInYr.setVarsInit(varsInitNode);
+            if (!isParse("WILE", true, true)) {
+                throw new InputMismatchException("Missing \"WILE\" section in a loop at position: " + currPos + ".");
             }
+            parse("WILE", true, true);
+            NodeExpression loopCondition = parseExpression();
+            nodeImInYr.setWhileCOndition(loopCondition);
+            while (true) {
+                if (isParse("IM OUTTA YR", true, true)) {
+                    break;
+                }
+                Node loopChildStatement = tokenizeStatementAndProceed();
+                nodeImInYr.addChild(loopChildStatement);
+            }
+            if (!isParse("IM OUTTA YR", true, true)) {
+                throw new InputMismatchException("Missing \"IM OUTTA YR\" section in a loop at position: " + currPos + ".");
+            }
+            parse("IM OUTTA YR", true, true);
+            NodeIdentifier loopEndName = parseIdentifier();
+            if (!loopEndName.getIdentifier().equals(nodeImInYr.getLoopName().getIdentifier())) {
+                throw new InputMismatchException(
+                        "Wrong label for a loop with a label: " + nodeImInYr
+                                + ". Found: " + loopEndName.getIdentifier() + "."
+                );
+            }
+            return nodeImInYr;
         }
         if (isParse("GIMMEH", true, true)) {
             parse("GIMMEH", true, true);

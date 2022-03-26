@@ -23,6 +23,9 @@ public abstract class Node {
         Iterator<Node> iterator = getChildes().iterator();
         while (iterator.hasNext()) {
             Node child = iterator.next();
+            if (child == null) {
+                continue;
+            }
             if (iterator.hasNext()) {
                 child.toTreeishString(buffer, childPrefix + "├── ", childPrefix + "│   ");
             } else {

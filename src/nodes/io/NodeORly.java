@@ -5,11 +5,14 @@ import nodes.expression.NodeExpression;
 
 public class NodeORly extends Node {
 
-    private Node expression;
+    private Node condition;
+    private NodeYaRly nodeYarly;
+    private NodeNoWai nodeNoWai;
 
-    public NodeORly(Node expression) {
-        this.expression = expression;
-        addChild(expression);
+    public NodeORly() {
+        addChild(null);
+        addChild(null);
+        addChild(null);
     }
 
     @Override
@@ -17,13 +20,30 @@ public class NodeORly extends Node {
         return "O RLY?";
     }
 
-    public Node getExpression() {
-        return expression;
+    public Node getCondition() {
+        return condition;
     }
 
-    public void setExpression(Node expression) {
-        this.expression = expression;
-        getChildes().set(0, expression);
+    public void setCondition(Node condition) {
+        getChildes().set(0, condition);
+        this.condition = condition;
     }
 
+    public NodeYaRly getNodeYarly() {
+        return nodeYarly;
+    }
+
+    public void setNodeYaRly(NodeYaRly nodeYarly) {
+        getChildes().set(1, nodeYarly);
+        this.nodeYarly = nodeYarly;
+    }
+
+    public NodeNoWai getNodeNoWai() {
+        return nodeNoWai;
+    }
+
+    public void setNodeNoWai(NodeNoWai nodeNoWai) {
+        getChildes().set(2, nodeNoWai);
+        this.nodeNoWai = nodeNoWai;
+    }
 }
