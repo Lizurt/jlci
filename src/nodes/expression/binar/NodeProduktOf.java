@@ -1,6 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
+import nodes.expression.PatternConstants;
 
 public class NodeProduktOf extends NodeBinaryExpression {
     public NodeProduktOf(Node leftOperand, Node rightOperand) {
@@ -9,6 +10,6 @@ public class NodeProduktOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return "PRODUKT OF";
+        return PatternConstants.parserPred.get(PatternConstants.PRODUKT_OF);
     }
 }

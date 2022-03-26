@@ -133,47 +133,43 @@ public class Parser {
         }
         if (isParse(PatternConstants.MOD_OF, true, true)) {
             parse(PatternConstants.MOD_OF, true, true);
-            return parseExpression(new NodeQuoshuntOf(null, null));
+            return parseExpression(new NodeModOf(null, null));
         }
         if (isParse(PatternConstants.BIGGER_OF, true, true)) {
             parse(PatternConstants.BIGGER_OF, true, true);
-            return parseExpression(new NodeQuoshuntOf(null, null));
+            return parseExpression(new NodeBiggerOf(null, null));
         }
         if (isParse(PatternConstants.SMALLER_OF, true, true)) {
             parse(PatternConstants.SMALLER_OF, true, true);
-            return parseExpression(new NodeQuoshuntOf(null, null));
+            return parseExpression(new NodeSmallerOf(null, null));
         }
         if (isParse(PatternConstants.BOTH_OF, true, true)) {
             parse(PatternConstants.BOTH_OF, true, true);
-            return parseExpression(new NodeQuoshuntOf(null, null));
-        }
-        if (isParse(PatternConstants.BOTH_OF, true, true)) {
-            parse(PatternConstants.BOTH_OF, true, true);
-            return parseExpression(new NodeQuoshuntOf(null, null));
+            return parseExpression(new NodeBothOf(null, null));
         }
         if (isParse(PatternConstants.EITHER_OF, true, true)) {
             parse(PatternConstants.EITHER_OF, true, true);
-            return parseExpression(new NodeQuoshuntOf(null, null));
+            return parseExpression(new NodeEitherOf(null, null));
         }
         if (isParse(PatternConstants.WON_OF, true, true)) {
             parse(PatternConstants.WON_OF, true, true);
-            return parseExpression(new NodeQuoshuntOf(null, null));
+            return parseExpression(new NodeWonOf(null, null));
         }
         if (isParse(PatternConstants.ALL_OF, true, true)) {
             parse(PatternConstants.ALL_OF, true, true);
-            return parseExpression(new NodeQuoshuntOf(null, null));
+            return parseExpression(new NodeAllOf(null, null));
         }
         if (isParse(PatternConstants.ANY_OF, true, true)) {
             parse(PatternConstants.ANY_OF, true, true);
-            return parseExpression(new NodeQuoshuntOf(null, null));
+            return parseExpression(new NodeAnyOf(null, null));
         }
         if (isParse(PatternConstants.BOTH_SAEM, true, true)) {
             parse(PatternConstants.BOTH_SAEM, true, true);
-            return parseExpression(new NodeQuoshuntOf(null, null));
+            return parseExpression(new NodeBothSaem(null, null));
         }
         if (isParse(PatternConstants.DIFFRINT, true, true)) {
             parse(PatternConstants.DIFFRINT, true, true);
-            return parseExpression(new NodeQuoshuntOf(null, null));
+            return parseExpression(new NodeDifferInt(null, null));
         }
 
         int fakeWhitespacesSkipLen = 0;
