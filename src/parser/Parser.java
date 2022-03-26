@@ -7,15 +7,13 @@ import nodes.expression.indivisible.NodeIdentifier;
 import nodes.expression.indivisible.NodeNumber;
 import nodes.expression.binar.*;
 import nodes.expression.unar.NodeUnaryExpression;
-import nodes.io.NodeGimmeh;
-import nodes.io.NodeVisible;
+import nodes.io.*;
 
 import java.util.InputMismatchException;
 
 public class Parser {
     private final String rawProgram;
     private int currPos = 0;
-    // "IT" in LOLCODE, but also implicitly used in "O RLY?"
     private NodeExpression lastExpressionToken;
 
     public Parser(final String rawProgram) {
@@ -41,12 +39,51 @@ public class Parser {
     }
 
     private Node tokenizeStatementAndProceed() {
-        /*
         if (isParse("O RLY?", true, true)) {
             parse("O RLY?", true, true);
-            return null;
+            Node node = new NodeORly(lastExpressionToken);
+            if (isParse("YA RLY", true, true)) {
+                parse("YA RLY", true, true);
+                Node child = tokenizeStatementAndProceed();
+                node.addChild(new NodeYaRly(child));
+            }
+            if (isParse("NO WAI", true, true)) {
+                parse("NO WAI", true, true);
+                Node child = tokenizeStatementAndProceed();
+                node.addChild(new NodeNoWai(child));
+            }
+            if (isParse("OIC", true, true)) {
+                parse("OIC", true, true);
+                node.addChild(new NodeOic());
+                return node;
+            }
+            return node;
         }
-         */
+        if (isParse("IM IN YR", true, true)) {
+            parse("IM IN YR", true, true);
+            NodeExpression expression = parseExpression();
+            lastExpressionToken = expression;
+            Node node = new NodeImInYr(expression);
+            Node child = tokenizeStatementAndProceed();
+            node.addChild(child);
+            if (isParse("YR", true, true)) {
+                parse("YR", true, true);
+                Node nodeYr = new NodeYr();
+                child = tokenizeStatementAndProceed();
+                nodeYr.addChild(child);
+                node.addChild(nodeYr);
+            }
+            expression = parseExpression();
+            lastExpressionToken = expression;
+            node.addChild(lastExpressionToken);
+            if (isParse("IM OUTTA YR", true, true)) {
+                parse("IM OUTTA YR", true, true);
+                expression = parseExpression();
+                lastExpressionToken = expression;
+                node.addChild(new NodeImInYr(expression));
+                return node;
+            }
+        }
         if (isParse("GIMMEH", true, true)) {
             parse("GIMMEH", true, true);
             NodeIdentifier identifier = parseIdentifier();

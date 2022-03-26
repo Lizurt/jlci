@@ -35,8 +35,7 @@ public abstract class Node {
         return childes;
     }
 
-    public void addChild(Node child)
-    {
+    public void addChild(Node child) {
         childes.add(child);
     }
 }
