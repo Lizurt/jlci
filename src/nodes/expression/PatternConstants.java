@@ -3,14 +3,13 @@ package nodes.expression;
 import java.util.HashMap;
 
 public abstract class PatternConstants {
-    // todo: fill with more constants to make it harder to typo
     public static final String SUM_OF = "SUM OF";
     public static final String DIFF_OF = "DIFF OF";
     public static final String PRODUKT_OF = "PRODUKT OF";
     public static final String QUOSHUNT_OF = "QUOSHUNT OF";
     public static final String MOD_OF = "MOD OF";
-    public static final String BIGGER_OF = "BIGGER OF";
-    public static final String SMALLER_OF = "SMALLER OF";
+    public static final String BIGGER_OF = "BIGGR OF";
+    public static final String SMALLER_OF = "SMALLR OF";
     public static final String BOTH_OF = "BOTH OF";
     public static final String EITHER_OF = "EITHER OF";
     public static final String WON_OF = "WON OF";
@@ -26,8 +25,8 @@ public abstract class PatternConstants {
         parserPred.put(PRODUKT_OF, "PRODUKT OF");
         parserPred.put(QUOSHUNT_OF, "SUM OF");
         parserPred.put(MOD_OF, "MOD OF");
-        parserPred.put(BIGGER_OF, "BIGGER OF");
-        parserPred.put(SMALLER_OF, "SMALLER OF");
+        parserPred.put(BIGGER_OF, "BIGGR OF");
+        parserPred.put(SMALLER_OF, "SMALLR OF");
         parserPred.put(BOTH_OF, "BOTH OF");
         parserPred.put(EITHER_OF, "EITHER OF");
         parserPred.put(WON_OF, "WON OF");

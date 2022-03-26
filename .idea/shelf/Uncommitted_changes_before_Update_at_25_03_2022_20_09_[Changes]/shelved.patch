@@ -1,0 +1,144 @@
+Index: src/parser/Parser.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package parser;\r\n\r\nimport nodes.*;\r\nimport nodes.expression.PatternConstants;\r\nimport nodes.expression.NodeExpression;\r\nimport nodes.expression.indivisible.NodeIdentifier;\r\nimport nodes.expression.indivisible.NodeNumber;\r\nimport nodes.expression.binar.*;\r\nimport nodes.expression.unar.NodeUnaryExpression;\r\nimport nodes.io.NodeGimmeh;\r\nimport nodes.io.NodeVisible;\r\n\r\nimport java.util.InputMismatchException;\r\n\r\npublic class Parser {\r\n    private final String rawProgram;\r\n    private int currPos = 0;\r\n    // \"IT\" in LOLCODE, but also implicitly used in \"O RLY?\"\r\n    private NodeExpression lastExpressionToken;\r\n\r\n    public Parser(final String rawProgram) {\r\n        this.rawProgram = rawProgram;\r\n    }\r\n\r\n    public Node parse() {\r\n        if (!isParse(\"HAI\", false, true)) {\r\n            throw new InputMismatchException(\"\\\"HAI\\\" is missing.\");\r\n        }\r\n        parse(\"HAI\", false, true);\r\n        NodeNumber version = parseNumber();\r\n        NodeRoot root = new NodeRoot(String.valueOf(version.getValue()));\r\n\r\n        while (currPos < rawProgram.length()) {\r\n            if (isParse(\"KTHXBYE\", true, false)) {\r\n                return root;\r\n            }\r\n            Node statement = tokenizeStatementAndProceed();\r\n            root.addChild(statement);\r\n        }\r\n        throw new InputMismatchException(\"\\\"KTHXBYE\\\" is missing.\");\r\n    }\r\n\r\n    private Node tokenizeStatementAndProceed() {\r\n        /*\r\n        if (isParse(\"O RLY?\", true, true)) {\r\n            parse(\"O RLY?\", true, true);\r\n            return null;\r\n        }\r\n         */\r\n        if (isParse(\"GIMMEH\", true, true)) {\r\n            parse(\"GIMMEH\", true, true);\r\n            NodeIdentifier identifier = parseIdentifier();\r\n            lastExpressionToken = identifier;\r\n            return new NodeGimmeh(identifier);\r\n        }\r\n        if (isParse(\"VISIBLE\", true, true)) {\r\n            parse(\"VISIBLE\", true, true);\r\n            NodeExpression expression = parseExpression();\r\n            lastExpressionToken = expression;\r\n            return new NodeVisible(expression);\r\n        }\r\n        NodeIdentifier identifier = parseIdentifier();\r\n        lastExpressionToken = identifier;\r\n        if (isParse(\"R\", true, true)) {\r\n            parse(\"R\", true, true);\r\n            return parseAssignation(identifier);\r\n        }\r\n        throw new InputMismatchException(\r\n                \"Unacceptable symbol \\\"\" + rawProgram.charAt(currPos) + \"\\\" at position \" + currPos + \".\"\r\n        );\r\n    }\r\n\r\n    private NodeExpression parseExpression() {\r\n        // ===== UNARY =====\r\n        /*if (isParse(\"NOT\", true, true)) {\r\n            parse(\"NOT\", true, true);\r\n            return parseExpression(new TokenNot(null));\r\n        }*/\r\n        // ===== BINARY =====\r\n        // --- math --\r\n        if (isParse(PatternConstants.SUM_OF, true, true)) {\r\n            parse(PatternConstants.SUM_OF, true, true);\r\n            return parseExpression(new NodeSumOf(null, null));\r\n        }\r\n        if (isParse(PatternConstants.DIFF_OF, true, true)) {\r\n            parse(PatternConstants.DIFF_OF, true, true);\r\n            return parseExpression(new NodeDiffOf(null, null));\r\n        }\r\n        if (isParse(PatternConstants.PRODUKT_OF, true, true)) {\r\n            parse(PatternConstants.PRODUKT_OF, true, true);\r\n            return parseExpression(new NodeProduktOf(null, null));\r\n        }\r\n        if (isParse(PatternConstants.QUOSHUNT_OF, true, true)) {\r\n            parse(PatternConstants.QUOSHUNT_OF, true, true);\r\n            return parseExpression(new NodeQuoshuntOf(null, null));\r\n        }\r\n        /* todo: more operators. Below and above. And don't forget to replace strings with PatternConstants\r\n        if (isParse(\"MOD OF\", true, true)) {\r\n            parse(\"\", true, true);\r\n            return null;\r\n        }\r\n        // --- logic ---\r\n        if (isParse(\"BIGGER OF\", true, true)) {\r\n            parse(\"\", true, true);\r\n            return null;\r\n        }\r\n        if (isParse(\"SMALLER OF\", true, true)) {\r\n            parse(\"\", true, true);\r\n            return null;\r\n        }\r\n        if (isParse(\"BOTH OF\", true, true)) {\r\n            parse(\"\", true, true);\r\n            return null;\r\n        }\r\n        if (isParse(\"EITHER OF\", true, true)) {\r\n            parse(\"\", true, true);\r\n            return null;\r\n        }\r\n        if (isParse(\"WON OF\", true, true)) {\r\n            parse(\"\", true, true);\r\n            return null;\r\n        }\r\n        if (isParse(\"ALL OF\", true, true)) {\r\n            parse(\"\", true, true);\r\n            return null;\r\n        }\r\n        if (isParse(\"ANY OF\", true, true)) {\r\n            parse(\"\", true, true);\r\n            return null;\r\n        }\r\n        if (isParse(\"BOTH SAEM\", true, true)) {\r\n            parse(\"\", true, true);\r\n            return null;\r\n        }\r\n        if (isParse(\"DIFFRINT\", true, true)) {\r\n            parse(\"\", true, true);\r\n            return null;\r\n        }\r\n         */\r\n        int fakeWhitespacesSkipLen = 0;\r\n        while (Character.isWhitespace(rawProgram.charAt(currPos + fakeWhitespacesSkipLen))) {\r\n            fakeWhitespacesSkipLen++;\r\n        }\r\n        if (\r\n                Character.isDigit(rawProgram.charAt(currPos + fakeWhitespacesSkipLen))\r\n                        || rawProgram.charAt(currPos + fakeWhitespacesSkipLen) == '.'\r\n        ) {\r\n            return parseNumber();\r\n        }\r\n\r\n        if (Character.isLetter(rawProgram.charAt(currPos + fakeWhitespacesSkipLen))) {\r\n            return parseIdentifier();\r\n        }\r\n\r\n        throw new InputMismatchException(\r\n                \"Unable to parse an expression starting with \\\"\"\r\n                        + rawProgram.charAt(currPos) + \"\\\" at position: \" + currPos + \".\"\r\n        );\r\n    }\r\n\r\n    private NodeExpression parseExpression(NodeBinaryExpression outerExpression) {\r\n        outerExpression.setLeftOperand(parseExpression());\r\n        if (isParse(\"AN\", true, true)) {\r\n            parse(\"AN\", true, true);\r\n        } else if (!outerExpression.isANIgnorable()) {\r\n            throw new InputMismatchException(\"\\\"AN\\\" is missing in the expression.\");\r\n        }\r\n        outerExpression.setRightOperand(parseExpression());\r\n        return outerExpression;\r\n    }\r\n\r\n    private NodeExpression parseExpression(NodeUnaryExpression outerExpression) {\r\n        // todo: unary expressions\r\n        return null;\r\n    }\r\n\r\n    private NodeNumber parseNumber() {\r\n        consumeWhitespaces();\r\n        int fromPos = currPos;\r\n        boolean alreadyHadDot = false;\r\n        while (true) {\r\n            if (Character.isDigit(rawProgram.charAt(currPos))) {\r\n                currPos++;\r\n                continue;\r\n            }\r\n            if (rawProgram.charAt(currPos) == '.') {\r\n                if (alreadyHadDot) {\r\n                    throw new InputMismatchException(\r\n                            \"A number can't have multiple dots. Position: \" + currPos + \".\"\r\n                    );\r\n                }\r\n                alreadyHadDot = true;\r\n                currPos++;\r\n                continue;\r\n            }\r\n            break;\r\n        }\r\n        return new NodeNumber(Double.parseDouble(rawProgram.substring(fromPos, currPos)));\r\n    }\r\n\r\n    private NodeIdentifier parseIdentifier() {\r\n        consumeWhitespaces();\r\n        int fromPos = currPos;\r\n        if (Character.isLetter(rawProgram.charAt(currPos))) {\r\n            currPos++;\r\n        } else {\r\n            throw new InputMismatchException(\r\n                    \"Identifiers cannot start with something except letters. Met: \" + rawProgram.charAt(currPos) + \".\"\r\n            );\r\n        }\r\n        while (Character.isLetterOrDigit(rawProgram.charAt(currPos))) {\r\n            currPos++;\r\n        }\r\n        if (Character.isWhitespace(rawProgram.charAt(currPos))) {\r\n            return new NodeIdentifier(rawProgram.substring(fromPos, currPos));\r\n        }\r\n        throw new InputMismatchException(\"Vars cannot contain such symbols: \" + rawProgram.charAt(currPos) + \".\");\r\n    }\r\n\r\n    private NodeAssignation parseAssignation(NodeIdentifier identifier) {\r\n        return new NodeAssignation(identifier, parseExpression());\r\n    }\r\n\r\n    private boolean isParse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {\r\n        int leftWhitespacesAmt = 0;\r\n        while (Character.isWhitespace(rawProgram.charAt(currPos + leftWhitespacesAmt))) {\r\n            leftWhitespacesAmt++;\r\n        }\r\n\r\n        if (requireLeftWhitespaces && leftWhitespacesAmt == 0) {\r\n            return false;\r\n        }\r\n\r\n        for (int i = 0; i < text.length(); i++) {\r\n            if (rawProgram.charAt(i + currPos + leftWhitespacesAmt) != text.charAt(i)) {\r\n                return false;\r\n            }\r\n        }\r\n\r\n        return !requireRightWhitespaces\r\n                || Character.isWhitespace(rawProgram.charAt(text.length() + leftWhitespacesAmt + currPos));\r\n    }\r\n\r\n    private void parse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {\r\n        if (isParse(text, requireLeftWhitespaces, requireRightWhitespaces)) {\r\n            currPos += consumeWhitespaces() + text.length();\r\n            return;\r\n        }\r\n        throw new InputMismatchException(\"Parsing error.\");\r\n    }\r\n\r\n    private int consumeWhitespaces() {\r\n        int consumedAmt = 0;\r\n        while (Character.isWhitespace(rawProgram.charAt(currPos))) {\r\n            consumedAmt++;\r\n            currPos++;\r\n        }\r\n        return consumedAmt;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/parser/Parser.java b/src/parser/Parser.java
+--- a/src/parser/Parser.java	(revision 9c9f2a40982eef9f43e58891106f55445ec9cfeb)
++++ b/src/parser/Parser.java	(date 1648228010149)
+@@ -8,6 +8,7 @@
+ import nodes.expression.binar.*;
+ import nodes.expression.unar.NodeUnaryExpression;
+ import nodes.io.NodeGimmeh;
++import nodes.io.NodeORly;
+ import nodes.io.NodeVisible;
+ 
+ import java.util.InputMismatchException;
+@@ -41,12 +42,24 @@
+     }
+ 
+     private Node tokenizeStatementAndProceed() {
+-        /*
+         if (isParse("O RLY?", true, true)) {
++            NodeExpression expression = parseExpression();
++            lastExpressionToken = expression;
+             parse("O RLY?", true, true);
+-            return null;
++            return new NodeORly(expression);
++        }
++        if (isParse("YA RLY", true, true)) {
++            parse("YA RLY", true, true);
++            NodeExpression expression = parseExpression();
++            lastExpressionToken = expression;
++            return new NodeORly(expression);
+         }
+-         */
++        if (isParse("NO WAI", true, true)) {
++            NodeExpression expression = parseExpression();
++            lastExpressionToken = expression;
++            parse("NO WAI", true, true);
++            return new NodeORly(expression);
++        }
+         if (isParse("GIMMEH", true, true)) {
+             parse("GIMMEH", true, true);
+             NodeIdentifier identifier = parseIdentifier();
+Index: src/test/test.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>HAI 0.1\r\nGIMMEH FIRST\r\nSEC0ND R 2.5\r\nTHIRD123 R SUM OF FIRST AN SECOND\r\nVISIBLE THIRD\r\nTHIRD123 R SUM OF PRODUKT OF SEC0ND AN 2 AN FIRST\r\nVISIBLE THIRD123\r\nKTHXBYE
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/test.txt b/src/test/test.txt
+--- a/src/test/test.txt	(revision 9c9f2a40982eef9f43e58891106f55445ec9cfeb)
++++ b/src/test/test.txt	(date 1648228033513)
+@@ -5,4 +5,8 @@
+ VISIBLE THIRD
+ THIRD123 R SUM OF PRODUKT OF SEC0ND AN 2 AN FIRST
+ VISIBLE THIRD123
++BOTH SAEM ANIMAL AN "CAT" O RLY?
++YA RLY, VISIBLE "J00 HAV A CAT"
++NO WAI, VISIBLE "J00 SUX"
++OIC
+ KTHXBYE
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"11.0.5\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 9c9f2a40982eef9f43e58891106f55445ec9cfeb)
++++ b/.idea/misc.xml	(date 1648139655793)
+@@ -3,4 +3,7 @@
+   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11.0.5" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
++  <component name="ProjectType">
++    <option name="id" value="jpab" />
++  </component>
+ </project>
+\ No newline at end of file
+Index: src/nodes/io/NodeORly.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/nodes/io/NodeORly.java b/src/nodes/io/NodeORly.java
+new file mode 100644
+--- /dev/null	(date 1648227621207)
++++ b/src/nodes/io/NodeORly.java	(date 1648227621207)
+@@ -0,0 +1,29 @@
++package nodes.io;
++
++import nodes.Node;
++import nodes.expression.NodeExpression;
++
++public class NodeORly extends Node {
++
++    private NodeExpression expression;
++
++    public NodeORly(NodeExpression expression) {
++        this.expression = expression;
++        addChild(expression);
++    }
++
++    @Override
++    public String toString() {
++        return "O RLY?";
++    }
++
++    public NodeExpression getExpression() {
++        return expression;
++    }
++
++    public void setExpression(NodeExpression expression) {
++        this.expression = expression;
++        getChildes().set(0, expression);
++    }
++
++}
+Index: out/production/lcc/test/test.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>HAI 0.1\r\nGIMMEH FIRST\r\nSEC0ND R 2.5\r\nTHIRD123 R SUM OF FIRST AN SECOND\r\nVISIBLE THIRD\r\nTHIRD123 R SUM OF PRODUKT OF SEC0ND AN 2 AN FIRST\r\nVISIBLE THIRD123\r\nKTHXBYE
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/production/lcc/test/test.txt b/out/production/lcc/test/test.txt
+--- a/out/production/lcc/test/test.txt	(revision 9c9f2a40982eef9f43e58891106f55445ec9cfeb)
++++ b/out/production/lcc/test/test.txt	(date 1648228033513)
+@@ -5,4 +5,8 @@
+ VISIBLE THIRD
+ THIRD123 R SUM OF PRODUKT OF SEC0ND AN 2 AN FIRST
+ VISIBLE THIRD123
++BOTH SAEM ANIMAL AN "CAT" O RLY?
++YA RLY, VISIBLE "J00 HAV A CAT"
++NO WAI, VISIBLE "J00 SUX"
++OIC
+ KTHXBYE
+\ No newline at end of file
