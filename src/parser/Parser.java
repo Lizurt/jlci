@@ -21,91 +21,98 @@ public class Parser {
     }
 
     public Node parse() {
-        if (!isParse("HAI", false, true)) {
-            throw new InputMismatchException("\"HAI\" is missing.");
+        if (!isParse(PatternConstants.HAI, false, true)) {
+            throw new InputMismatchException("\"" + PatternConstants.HAI + "\" is missing.");
         }
-        parse("HAI", false, true);
+        parse(PatternConstants.HAI, false, true);
         NodeNumber version = parseNumber();
         NodeRoot root = new NodeRoot(String.valueOf(version.getValue()));
 
         while (currPos < rawProgram.length()) {
-            if (isParse("KTHXBYE", true, false)) {
+            if (isParse(PatternConstants.KTHXBYE, true, false)) {
                 return root;
             }
             Node statement = tokenizeStatementAndProceed();
             root.addChild(statement);
         }
-        throw new InputMismatchException("\"KTHXBYE\" is missing.");
+        throw new InputMismatchException("\"" + PatternConstants.KTHXBYE + "\" is missing.");
     }
 
     private Node tokenizeStatementAndProceed() {
-        if (isParse("O RLY?", true, true)) {
-            parse("O RLY?", true, true);
+        if (isParse(PatternConstants.O_RLY, true, true)) {
+            parse(PatternConstants.O_RLY, true, true);
             NodeORly nodeORly = new NodeORly();
             nodeORly.setCondition(lastExpressionToken);
-            if (isParse("YA RLY", true, true)) {
-                parse("YA RLY", true, true);
+            if (isParse(PatternConstants.YA_RLY, true, true)) {
+                parse(PatternConstants.YA_RLY, true, true);
                 NodeYaRly nodeYaRly = new NodeYaRly();
                 nodeORly.setNodeYaRly(nodeYaRly);
                 while (true) {
-                    if (isParse("NO WAI", true, true)) {
+                    if (isParse(PatternConstants.NO_WAI, true, true)) {
                         break;
                     }
-                    if (isParse("OIC", true, true)) {
+                    if (isParse(PatternConstants.OIC, true, true)) {
                         break;
                     }
                     Node childStatement = tokenizeStatementAndProceed();
                     nodeYaRly.addChild(childStatement);
                 }
             }
-            if (isParse("NO WAI", true, true)) {
-                parse("NO WAI", true, true);
+            if (isParse(PatternConstants.NO_WAI, true, true)) {
+                parse(PatternConstants.NO_WAI, true, true);
                 NodeNoWai nodeNoWai = new NodeNoWai();
                 nodeORly.setNodeNoWai(nodeNoWai);
                 while (true) {
-                    if (isParse("OIC", true, true)) {
+                    if (isParse(PatternConstants.OIC, true, true)) {
                         break;
                     }
                     Node childStatement = tokenizeStatementAndProceed();
                     nodeNoWai.addChild(childStatement);
                 }
             }
-            if (isParse("OIC", true, true)) {
-                parse("OIC", true, true);
+            if (isParse(PatternConstants.OIC, true, true)) {
+                parse(PatternConstants.OIC, true, true);
                 return nodeORly;
             }
-            throw new InputMismatchException("Couldn't find OIC node at position: " + currPos + ".");
+            throw new InputMismatchException(
+                    "Couldn't find " + PatternConstants.OIC + " node at position: " + currPos + "."
+            );
         }
-        if (isParse("IM IN YR", true, true)) {
-            parse("IM IN YR", true, true);
+        if (isParse(PatternConstants.IM_IN_YR, true, true)) {
+            parse(PatternConstants.IM_IN_YR, true, true);
             NodeImInYr nodeImInYr = new NodeImInYr();
             NodeIdentifier loopName = parseIdentifier();
             nodeImInYr.setLoopName(loopName);
             Node afterLoopAction = tokenizeStatementAndProceed();
             nodeImInYr.setAfterLoopAction(afterLoopAction);
-            if (!isParse("YR", true, true)) {
-                throw new InputMismatchException("Missing \"YR\" section in a loop at position: " + currPos + ".");
+            if (!isParse(PatternConstants.YR, true, true)) {
+                throw new InputMismatchException("Missing " + PatternConstants.YR + " section in a loop at position: " + currPos + ".");
             }
-            parse("YR", true, true);
+            parse(PatternConstants.YR, true, true);
             Node varsInitNode = tokenizeStatementAndProceed();
             nodeImInYr.setVarsInit(varsInitNode);
-            if (!isParse("WILE", true, true)) {
-                throw new InputMismatchException("Missing \"WILE\" section in a loop at position: " + currPos + ".");
+            if (!isParse(PatternConstants.WILE, true, true)) {
+                throw new InputMismatchException(
+                        "Missing " + PatternConstants.TIL + "/" + PatternConstants.WILE
+                                + " section in a loop at position: " + currPos + "."
+                );
             }
-            parse("WILE", true, true);
+            parse(PatternConstants.WILE, true, true);
             NodeExpression loopCondition = parseExpression();
             nodeImInYr.setWhileCOndition(loopCondition);
             while (true) {
-                if (isParse("IM OUTTA YR", true, true)) {
+                if (isParse(PatternConstants.IM_OUTTA_YR, true, true)) {
                     break;
                 }
                 Node loopChildStatement = tokenizeStatementAndProceed();
                 nodeImInYr.addChild(loopChildStatement);
             }
-            if (!isParse("IM OUTTA YR", true, true)) {
-                throw new InputMismatchException("Missing \"IM OUTTA YR\" section in a loop at position: " + currPos + ".");
+            if (!isParse(PatternConstants.IM_OUTTA_YR, true, true)) {
+                throw new InputMismatchException(
+                        "Missing " + PatternConstants.IM_OUTTA_YR + " section in a loop at position: " + currPos + "."
+                );
             }
-            parse("IM OUTTA YR", true, true);
+            parse(PatternConstants.IM_OUTTA_YR, true, true);
             NodeIdentifier loopEndName = parseIdentifier();
             if (!loopEndName.getIdentifier().equals(nodeImInYr.getLoopName().getIdentifier())) {
                 throw new InputMismatchException(
@@ -115,22 +122,22 @@ public class Parser {
             }
             return nodeImInYr;
         }
-        if (isParse("GIMMEH", true, true)) {
-            parse("GIMMEH", true, true);
+        if (isParse(PatternConstants.GIMMEH, true, true)) {
+            parse(PatternConstants.GIMMEH, true, true);
             NodeIdentifier identifier = parseIdentifier();
             lastExpressionToken = identifier;
             return new NodeGimmeh(identifier);
         }
-        if (isParse("VISIBLE", true, true)) {
-            parse("VISIBLE", true, true);
+        if (isParse(PatternConstants.VISIBLE, true, true)) {
+            parse(PatternConstants.VISIBLE, true, true);
             NodeExpression expression = parseExpression();
             lastExpressionToken = expression;
             return new NodeVisible(expression);
         }
         NodeIdentifier identifier = parseIdentifier();
         lastExpressionToken = identifier;
-        if (isParse("R", true, true)) {
-            parse("R", true, true);
+        if (isParse(PatternConstants.R, true, true)) {
+            parse(PatternConstants.R, true, true);
             return parseAssignation(identifier);
         }
         throw new InputMismatchException(
@@ -226,10 +233,10 @@ public class Parser {
 
     private NodeExpression parseExpression(NodeBinaryExpression outerExpression) {
         outerExpression.setLeftOperand(parseExpression());
-        if (isParse("AN", true, true)) {
-            parse("AN", true, true);
+        if (isParse(PatternConstants.AN, true, true)) {
+            parse(PatternConstants.AN, true, true);
         } else if (!outerExpression.isANIgnorable()) {
-            throw new InputMismatchException("\"AN\" is missing in the expression.");
+            throw new InputMismatchException(PatternConstants.AN + " is missing in the expression.");
         }
         outerExpression.setRightOperand(parseExpression());
         return outerExpression;

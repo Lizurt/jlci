@@ -29,6 +29,15 @@ public abstract class PatternConstants {
     public static final String HAI = "HAI";
     public static final String IM_IN_YR = "IM IN YR";
 
+    // unsouttable. These ones need only for syntax/semantic analysis, they won't be presented in asttree nor bytecode
+    public static final String KTHXBYE = "KTHXBYE";
+    public static final String OIC = "OIC";
+    public static final String YR = "YR";
+    public static final String WILE = "WILE";
+    public static final String TIL = "TIL";
+    public static final String IM_OUTTA_YR = "IM OUTTA YR";
+    public static final String AN = "AN";
+
     public static final HashMap<String, String> astTreeSoutDictionary = new HashMap<>();
     static {
         boolean alternateSoutting = true;
