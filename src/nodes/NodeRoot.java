@@ -2,7 +2,7 @@ package nodes;
 
 import parser.PatternConstants;
 
-public class NodeRoot extends Node {
+public class NodeRoot extends NodeStatements {
     private String version;
 
     public NodeRoot(String version) {

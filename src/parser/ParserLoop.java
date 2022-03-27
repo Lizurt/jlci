@@ -3,7 +3,7 @@ package parser;
 import nodes.Node;
 import nodes.expression.NodeExpression;
 import nodes.expression.indivisible.NodeIdentifier;
-import nodes.io.NodeImInYr;
+import nodes.loop.NodeImInYr;
 
 import java.util.InputMismatchException;
 
@@ -34,13 +34,13 @@ public class ParserLoop extends PartialParser {
         }
         getMainParser().parse(PatternConstants.WILE, true, true);
         NodeExpression loopCondition = getMainParser().parseExpression();
-        nodeImInYr.setWhileCOndition(loopCondition);
+        nodeImInYr.setWhileCondition(loopCondition);
         while (true) {
             if (getMainParser().isParse(PatternConstants.IM_OUTTA_YR, true, true)) {
                 break;
             }
             Node loopChildStatement = getMainParser().tokenizeStatementAndProceed();
-            nodeImInYr.addChild(loopChildStatement);
+            nodeImInYr.getStatements().addChild(loopChildStatement);
         }
         if (!getMainParser().isParse(PatternConstants.IM_OUTTA_YR, true, true)) {
             throw new InputMismatchException(

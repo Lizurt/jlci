@@ -1,6 +1,7 @@
-package nodes.io;
+package nodes.loop;
 
 import nodes.Node;
+import nodes.NodeStatements;
 import nodes.expression.NodeExpression;
 import parser.PatternConstants;
 import nodes.expression.indivisible.NodeIdentifier;
@@ -10,13 +11,15 @@ public class NodeImInYr extends Node {
     private NodeIdentifier loopName;
     private Node afterLoopAction;
     private Node varsInit;
-    private NodeExpression whileCOndition;
+    private NodeExpression whileCondition;
+    private NodeStatements statements = new NodeStatements();
 
     public NodeImInYr() {
         addChild(null);
         addChild(null);
         addChild(null);
         addChild(null);
+        addChild(getStatements());
     }
 
     @Override
@@ -51,12 +54,21 @@ public class NodeImInYr extends Node {
         this.varsInit = varsInit;
     }
 
-    public NodeExpression getWhileCOndition() {
-        return whileCOndition;
+    public NodeExpression getWhileCondition() {
+        return whileCondition;
     }
 
-    public void setWhileCOndition(NodeExpression whileCOndition) {
-        getChildes().set(3, whileCOndition);
-        this.whileCOndition = whileCOndition;
+    public void setWhileCondition(NodeExpression whileCondition) {
+        getChildes().set(3, whileCondition);
+        this.whileCondition = whileCondition;
+    }
+
+    public NodeStatements getStatements() {
+        return statements;
+    }
+
+    public void setStatements(NodeStatements statements) {
+        getChildes().set(4, statements);
+        this.statements = statements;
     }
 }

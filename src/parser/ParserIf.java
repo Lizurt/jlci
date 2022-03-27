@@ -1,9 +1,9 @@
 package parser;
 
 import nodes.Node;
-import nodes.io.NodeNoWai;
-import nodes.io.NodeORly;
-import nodes.io.NodeYaRly;
+import nodes.condition.NodeNoWai;
+import nodes.condition.NodeORly;
+import nodes.condition.NodeYaRly;
 
 import java.util.InputMismatchException;
 

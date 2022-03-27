@@ -1,4 +1,4 @@
-package nodes.io;
+package nodes.condition;
 
 import nodes.Node;
 import parser.PatternConstants;
@@ -6,7 +6,7 @@ import parser.PatternConstants;
 public class NodeORly extends Node {
 
     private Node condition;
-    private NodeYaRly nodeYarly;
+    private NodeYaRly nodeYaRly;
     private NodeNoWai nodeNoWai;
 
     public NodeORly() {
@@ -29,13 +29,13 @@ public class NodeORly extends Node {
         this.condition = condition;
     }
 
-    public NodeYaRly getNodeYarly() {
-        return nodeYarly;
+    public NodeYaRly getNodeYaRly() {
+        return nodeYaRly;
     }
 
     public void setNodeYaRly(NodeYaRly nodeYarly) {
         getChildes().set(1, nodeYarly);
-        this.nodeYarly = nodeYarly;
+        this.nodeYaRly = nodeYarly;
     }
 
     public NodeNoWai getNodeNoWai() {

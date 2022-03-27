@@ -1,9 +1,9 @@
-package nodes.io;
+package nodes.condition;
 
-import nodes.Node;
+import nodes.NodeStatements;
 import parser.PatternConstants;
 
-public class NodeYaRly extends Node {
+public class NodeYaRly extends NodeStatements {
     @Override
     public String toString() {
         return PatternConstants.astTreeSoutDictionary.get(PatternConstants.YA_RLY);
