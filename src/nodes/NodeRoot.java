@@ -1,5 +1,7 @@
 package nodes;
 
+import nodes.expression.PatternConstants;
+
 public class NodeRoot extends Node {
     private String version;
 
@@ -17,6 +19,6 @@ public class NodeRoot extends Node {
 
     @Override
     public String toString() {
-        return "HAI";
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.HAI);
     }
 }

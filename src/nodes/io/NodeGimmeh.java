@@ -1,6 +1,7 @@
 package nodes.io;
 
 import nodes.Node;
+import nodes.expression.PatternConstants;
 import nodes.expression.indivisible.NodeIdentifier;
 
 public class NodeGimmeh extends Node {
@@ -22,6 +23,6 @@ public class NodeGimmeh extends Node {
 
     @Override
     public String toString() {
-        return "GIMMEH";
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.GIMMEH);
     }
 }

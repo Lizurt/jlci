@@ -6,7 +6,6 @@ import nodes.expression.NodeExpression;
 import nodes.expression.indivisible.NodeIdentifier;
 import nodes.expression.indivisible.NodeNumber;
 import nodes.expression.binar.*;
-import nodes.expression.unar.NodeNot;
 import nodes.expression.unar.NodeUnaryExpression;
 import nodes.io.*;
 

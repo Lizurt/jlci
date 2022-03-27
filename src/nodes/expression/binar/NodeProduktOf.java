@@ -10,6 +10,6 @@ public class NodeProduktOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return PatternConstants.parserPred.get(PatternConstants.PRODUKT_OF);
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.PRODUKT_OF);
     }
 }

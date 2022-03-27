@@ -10,6 +10,6 @@ public class NodeAnyOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return PatternConstants.parserPred.get(PatternConstants.ANY_OF);
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.ANY_OF);
     }
 }

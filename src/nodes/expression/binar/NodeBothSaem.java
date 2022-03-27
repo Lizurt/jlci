@@ -3,8 +3,6 @@ package nodes.expression.binar;
 import nodes.Node;
 import nodes.expression.PatternConstants;
 
-import java.util.HashMap;
-
 public class NodeBothSaem extends NodeBinaryExpression {
     public NodeBothSaem(Node leftOperand, Node rightOperand) {
         super(leftOperand, rightOperand);
@@ -12,6 +10,6 @@ public class NodeBothSaem extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return PatternConstants.parserPred.get(PatternConstants.BOTH_SAEM);
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.BOTH_SAEM);
     }
 }

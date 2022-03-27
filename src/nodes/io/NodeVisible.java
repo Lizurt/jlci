@@ -2,6 +2,7 @@ package nodes.io;
 
 import nodes.Node;
 import nodes.expression.NodeExpression;
+import nodes.expression.PatternConstants;
 
 public class NodeVisible extends Node {
     private NodeExpression expression;
@@ -13,7 +14,7 @@ public class NodeVisible extends Node {
 
     @Override
     public String toString() {
-        return "VISIBLE";
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.VISIBLE);
     }
 
     public NodeExpression getExpression() {

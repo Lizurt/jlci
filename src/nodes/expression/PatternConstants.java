@@ -3,6 +3,7 @@ package nodes.expression;
 import java.util.HashMap;
 
 public abstract class PatternConstants {
+    // expressions
     public static final String SUM_OF = "SUM OF";
     public static final String DIFF_OF = "DIFF OF";
     public static final String PRODUKT_OF = "PRODUKT OF";
@@ -17,22 +18,70 @@ public abstract class PatternConstants {
     public static final String ANY_OF = "ANY OF";
     public static final String BOTH_SAEM = "BOTH SAEM";
     public static final String DIFFRINT = "DIFFRINT";
-    public static final HashMap<String, String> parserPred = new HashMap<>();
 
+    // other statements
+    public static final String VISIBLE = "VISIBLE";
+    public static final String GIMMEH = "GIMMEH";
+    public static final String O_RLY = "O RLY?";
+    public static final String YA_RLY = "YA RLY";
+    public static final String NO_WAI = "NO WAI";
+    public static final String R = "R";
+    public static final String HAI = "HAI";
+    public static final String IM_IN_YR = "IM IN YR";
+
+    public static final HashMap<String, String> astTreeSoutDictionary = new HashMap<>();
     static {
-        parserPred.put(SUM_OF, "SUM OF");
-        parserPred.put(DIFF_OF, "DIFF OF");
-        parserPred.put(PRODUKT_OF, "PRODUKT OF");
-        parserPred.put(QUOSHUNT_OF, "SUM OF");
-        parserPred.put(MOD_OF, "MOD OF");
-        parserPred.put(BIGGER_OF, "BIGGR OF");
-        parserPred.put(SMALLER_OF, "SMALLR OF");
-        parserPred.put(BOTH_OF, "BOTH OF");
-        parserPred.put(EITHER_OF, "EITHER OF");
-        parserPred.put(WON_OF, "WON OF");
-        parserPred.put(ALL_OF, "ALL OF");
-        parserPred.put(ANY_OF, "ANY OF");
-        parserPred.put(BOTH_SAEM, "BOTH SAEM");
-        parserPred.put(DIFFRINT, "DIFFRINT");
+        boolean alternateSoutting = true;
+        if (alternateSoutting) {
+// expressions
+            astTreeSoutDictionary.put(SUM_OF, "+");
+            astTreeSoutDictionary.put(DIFF_OF, "-");
+            astTreeSoutDictionary.put(PRODUKT_OF, "*");
+            astTreeSoutDictionary.put(QUOSHUNT_OF, "/");
+            astTreeSoutDictionary.put(MOD_OF, "%");
+            astTreeSoutDictionary.put(BIGGER_OF, "max");
+            astTreeSoutDictionary.put(SMALLER_OF, "min");
+            astTreeSoutDictionary.put(BOTH_OF, "&&");
+            astTreeSoutDictionary.put(EITHER_OF, "||");
+            astTreeSoutDictionary.put(WON_OF, "^");
+            astTreeSoutDictionary.put(ALL_OF, "&&");
+            astTreeSoutDictionary.put(ANY_OF, "||");
+            astTreeSoutDictionary.put(BOTH_SAEM, "==");
+            astTreeSoutDictionary.put(DIFFRINT, "!=");
+
+            // other statements
+            astTreeSoutDictionary.put(VISIBLE, "cout");
+            astTreeSoutDictionary.put(GIMMEH, "cin");
+            astTreeSoutDictionary.put(O_RLY, "if");
+            astTreeSoutDictionary.put(YA_RLY, "then");
+            astTreeSoutDictionary.put(NO_WAI, "else");
+            astTreeSoutDictionary.put(R, "=");
+            astTreeSoutDictionary.put(HAI, "...");
+        } else {
+            // expressions
+            astTreeSoutDictionary.put(SUM_OF, SUM_OF);
+            astTreeSoutDictionary.put(DIFF_OF, DIFF_OF);
+            astTreeSoutDictionary.put(PRODUKT_OF, PRODUKT_OF);
+            astTreeSoutDictionary.put(QUOSHUNT_OF, QUOSHUNT_OF);
+            astTreeSoutDictionary.put(MOD_OF, MOD_OF);
+            astTreeSoutDictionary.put(BIGGER_OF, BIGGER_OF);
+            astTreeSoutDictionary.put(SMALLER_OF, SMALLER_OF);
+            astTreeSoutDictionary.put(BOTH_OF, BOTH_OF);
+            astTreeSoutDictionary.put(EITHER_OF, EITHER_OF);
+            astTreeSoutDictionary.put(WON_OF, WON_OF);
+            astTreeSoutDictionary.put(ALL_OF, ALL_OF);
+            astTreeSoutDictionary.put(ANY_OF, ANY_OF);
+            astTreeSoutDictionary.put(BOTH_SAEM, BOTH_SAEM);
+            astTreeSoutDictionary.put(DIFFRINT, DIFFRINT);
+
+            // other statements
+            astTreeSoutDictionary.put(VISIBLE, VISIBLE);
+            astTreeSoutDictionary.put(GIMMEH, GIMMEH);
+            astTreeSoutDictionary.put(O_RLY, O_RLY);
+            astTreeSoutDictionary.put(YA_RLY, YA_RLY);
+            astTreeSoutDictionary.put(NO_WAI, NO_WAI);
+            astTreeSoutDictionary.put(R, R);
+            astTreeSoutDictionary.put(HAI, HAI);
+        }
     }
 }

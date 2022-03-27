@@ -1,6 +1,7 @@
 package nodes;
 
 import nodes.expression.NodeExpression;
+import nodes.expression.PatternConstants;
 import nodes.expression.indivisible.NodeIdentifier;
 
 public class NodeAssignation extends Node {
@@ -34,6 +35,6 @@ public class NodeAssignation extends Node {
 
     @Override
     public String toString() {
-        return "R";
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.R);
     }
 }

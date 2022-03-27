@@ -10,6 +10,6 @@ public class NodeModOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return PatternConstants.parserPred.get(PatternConstants.MOD_OF);
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.MOD_OF);
     }
 }

@@ -2,6 +2,7 @@ package nodes.io;
 
 import nodes.Node;
 import nodes.expression.NodeExpression;
+import nodes.expression.PatternConstants;
 
 public class NodeORly extends Node {
 
@@ -17,7 +18,7 @@ public class NodeORly extends Node {
 
     @Override
     public String toString() {
-        return "O RLY?";
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.O_RLY);
     }
 
     public Node getCondition() {

@@ -10,7 +10,7 @@ public class NodeDiffOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return PatternConstants.parserPred.get(PatternConstants.DIFF_OF);
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.DIFF_OF);
 
     }
 }

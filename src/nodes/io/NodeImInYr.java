@@ -2,6 +2,7 @@ package nodes.io;
 
 import nodes.Node;
 import nodes.expression.NodeExpression;
+import nodes.expression.PatternConstants;
 import nodes.expression.indivisible.NodeIdentifier;
 
 public class NodeImInYr extends Node {
@@ -20,7 +21,7 @@ public class NodeImInYr extends Node {
 
     @Override
     public String toString() {
-        return "IM IN YR";
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.IM_IN_YR);
     }
 
     public NodeIdentifier getLoopName() {

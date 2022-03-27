@@ -10,6 +10,6 @@ public class NodeBiggerOf extends NodeBinaryExpression {
 
     @Override
     public String toString() {
-        return PatternConstants.parserPred.get(PatternConstants.BIGGER_OF);
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.BIGGER_OF);
     }
 }
