@@ -12,9 +12,16 @@ import nodes.io.*;
 import java.util.InputMismatchException;
 
 public class Parser {
-    private final String rawProgram;
-    private int currPos = 0;
-    private NodeExpression lastExpressionToken;
+    final String rawProgram;
+    int currPos = 0;
+    NodeExpression lastExpressionToken;
+    NodeIdentifier lastIdentifierToken;
+
+    private ParserIf parserIf = new ParserIf(this);
+    private ParserLoop parserLoop = new ParserLoop(this);
+    private ParserVisible parserVisible = new ParserVisible(this);
+    private ParserGimmeh parserGimmeh = new ParserGimmeh(this);
+    private ParserAssignation parserAssignation = new ParserAssignation(this);
 
     public Parser(final String rawProgram) {
         this.rawProgram = rawProgram;
@@ -38,114 +45,29 @@ public class Parser {
         throw new InputMismatchException("\"" + PatternConstants.KTHXBYE + "\" is missing.");
     }
 
-    private Node tokenizeStatementAndProceed() {
+    Node tokenizeStatementAndProceed() {
         if (isParse(PatternConstants.O_RLY, true, true)) {
-            parse(PatternConstants.O_RLY, true, true);
-            NodeORly nodeORly = new NodeORly();
-            nodeORly.setCondition(lastExpressionToken);
-            if (isParse(PatternConstants.YA_RLY, true, true)) {
-                parse(PatternConstants.YA_RLY, true, true);
-                NodeYaRly nodeYaRly = new NodeYaRly();
-                nodeORly.setNodeYaRly(nodeYaRly);
-                while (true) {
-                    if (isParse(PatternConstants.NO_WAI, true, true)) {
-                        break;
-                    }
-                    if (isParse(PatternConstants.OIC, true, true)) {
-                        break;
-                    }
-                    Node childStatement = tokenizeStatementAndProceed();
-                    nodeYaRly.addChild(childStatement);
-                }
-            }
-            if (isParse(PatternConstants.NO_WAI, true, true)) {
-                parse(PatternConstants.NO_WAI, true, true);
-                NodeNoWai nodeNoWai = new NodeNoWai();
-                nodeORly.setNodeNoWai(nodeNoWai);
-                while (true) {
-                    if (isParse(PatternConstants.OIC, true, true)) {
-                        break;
-                    }
-                    Node childStatement = tokenizeStatementAndProceed();
-                    nodeNoWai.addChild(childStatement);
-                }
-            }
-            if (isParse(PatternConstants.OIC, true, true)) {
-                parse(PatternConstants.OIC, true, true);
-                return nodeORly;
-            }
-            throw new InputMismatchException(
-                    "Couldn't find " + PatternConstants.OIC + " node at position: " + currPos + "."
-            );
+            return parserIf.parse();
         }
         if (isParse(PatternConstants.IM_IN_YR, true, true)) {
-            parse(PatternConstants.IM_IN_YR, true, true);
-            NodeImInYr nodeImInYr = new NodeImInYr();
-            NodeIdentifier loopName = parseIdentifier();
-            nodeImInYr.setLoopName(loopName);
-            Node afterLoopAction = tokenizeStatementAndProceed();
-            nodeImInYr.setAfterLoopAction(afterLoopAction);
-            if (!isParse(PatternConstants.YR, true, true)) {
-                throw new InputMismatchException("Missing " + PatternConstants.YR + " section in a loop at position: " + currPos + ".");
-            }
-            parse(PatternConstants.YR, true, true);
-            Node varsInitNode = tokenizeStatementAndProceed();
-            nodeImInYr.setVarsInit(varsInitNode);
-            if (!isParse(PatternConstants.WILE, true, true)) {
-                throw new InputMismatchException(
-                        "Missing " + PatternConstants.TIL + "/" + PatternConstants.WILE
-                                + " section in a loop at position: " + currPos + "."
-                );
-            }
-            parse(PatternConstants.WILE, true, true);
-            NodeExpression loopCondition = parseExpression();
-            nodeImInYr.setWhileCOndition(loopCondition);
-            while (true) {
-                if (isParse(PatternConstants.IM_OUTTA_YR, true, true)) {
-                    break;
-                }
-                Node loopChildStatement = tokenizeStatementAndProceed();
-                nodeImInYr.addChild(loopChildStatement);
-            }
-            if (!isParse(PatternConstants.IM_OUTTA_YR, true, true)) {
-                throw new InputMismatchException(
-                        "Missing " + PatternConstants.IM_OUTTA_YR + " section in a loop at position: " + currPos + "."
-                );
-            }
-            parse(PatternConstants.IM_OUTTA_YR, true, true);
-            NodeIdentifier loopEndName = parseIdentifier();
-            if (!loopEndName.getIdentifier().equals(nodeImInYr.getLoopName().getIdentifier())) {
-                throw new InputMismatchException(
-                        "Wrong label for a loop with a label: " + nodeImInYr
-                                + ". Found: " + loopEndName.getIdentifier() + "."
-                );
-            }
-            return nodeImInYr;
+            return parserLoop.parse();
         }
         if (isParse(PatternConstants.GIMMEH, true, true)) {
-            parse(PatternConstants.GIMMEH, true, true);
-            NodeIdentifier identifier = parseIdentifier();
-            lastExpressionToken = identifier;
-            return new NodeGimmeh(identifier);
+            return parserGimmeh.parse();
         }
         if (isParse(PatternConstants.VISIBLE, true, true)) {
-            parse(PatternConstants.VISIBLE, true, true);
-            NodeExpression expression = parseExpression();
-            lastExpressionToken = expression;
-            return new NodeVisible(expression);
+            return parserVisible.parse();
         }
-        NodeIdentifier identifier = parseIdentifier();
-        lastExpressionToken = identifier;
+        lastIdentifierToken = parseIdentifier();
         if (isParse(PatternConstants.R, true, true)) {
-            parse(PatternConstants.R, true, true);
-            return parseAssignation(identifier);
+            return parserAssignation.parse();
         }
         throw new InputMismatchException(
                 "Unacceptable symbol \"" + rawProgram.charAt(currPos) + "\" at position " + currPos + "."
         );
     }
 
-    private NodeExpression parseExpression() {
+    NodeExpression parseExpression() {
         // ===== UNARY =====
         /*if (isParse("NOT", true, true)) {
             parse("NOT", true, true);
@@ -231,7 +153,7 @@ public class Parser {
         );
     }
 
-    private NodeExpression parseExpression(NodeBinaryExpression outerExpression) {
+    NodeExpression parseExpression(NodeBinaryExpression outerExpression) {
         outerExpression.setLeftOperand(parseExpression());
         if (isParse(PatternConstants.AN, true, true)) {
             parse(PatternConstants.AN, true, true);
@@ -242,12 +164,12 @@ public class Parser {
         return outerExpression;
     }
 
-    private NodeExpression parseExpression(NodeUnaryExpression outerExpression) {
+    NodeExpression parseExpression(NodeUnaryExpression outerExpression) {
         // todo: unary expressions
         return null;
     }
 
-    private NodeNumber parseNumber() {
+    NodeNumber parseNumber() {
         consumeWhitespaces();
         int fromPos = currPos;
         boolean alreadyHadDot = false;
@@ -271,7 +193,7 @@ public class Parser {
         return new NodeNumber(Double.parseDouble(rawProgram.substring(fromPos, currPos)));
     }
 
-    private NodeIdentifier parseIdentifier() {
+    NodeIdentifier parseIdentifier() {
         consumeWhitespaces();
         int fromPos = currPos;
         if (Character.isLetter(rawProgram.charAt(currPos))) {
@@ -290,11 +212,11 @@ public class Parser {
         throw new InputMismatchException("Vars cannot contain such symbols: " + rawProgram.charAt(currPos) + ".");
     }
 
-    private NodeAssignation parseAssignation(NodeIdentifier identifier) {
+    NodeAssignation parseAssignation(NodeIdentifier identifier) {
         return new NodeAssignation(identifier, parseExpression());
     }
 
-    private boolean isParse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {
+    boolean isParse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {
         int leftWhitespacesAmt = 0;
         while (Character.isWhitespace(rawProgram.charAt(currPos + leftWhitespacesAmt))) {
             leftWhitespacesAmt++;
@@ -314,7 +236,7 @@ public class Parser {
                 || Character.isWhitespace(rawProgram.charAt(text.length() + leftWhitespacesAmt + currPos));
     }
 
-    private void parse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {
+    void parse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {
         if (isParse(text, requireLeftWhitespaces, requireRightWhitespaces)) {
             currPos += consumeWhitespaces() + text.length();
             return;
@@ -322,7 +244,7 @@ public class Parser {
         throw new InputMismatchException("Parsing error.");
     }
 
-    private int consumeWhitespaces() {
+    int consumeWhitespaces() {
         int consumedAmt = 0;
         while (Character.isWhitespace(rawProgram.charAt(currPos))) {
             consumedAmt++;
