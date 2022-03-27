@@ -1,7 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
-import nodes.expression.PatternConstants;
+import parser.PatternConstants;
 
 public class NodeAllOf extends NodeBinaryExpression {
     public NodeAllOf(Node leftOperand, Node rightOperand) {

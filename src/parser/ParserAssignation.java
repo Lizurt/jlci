@@ -1,7 +1,6 @@
 package parser;
 
 import nodes.Node;
-import nodes.expression.PatternConstants;
 import nodes.expression.indivisible.NodeIdentifier;
 
 import java.util.InputMismatchException;

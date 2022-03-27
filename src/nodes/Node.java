@@ -20,17 +20,24 @@ public abstract class Node {
         buffer.append(selfPrefix);
         buffer.append(toString());
         buffer.append('\n');
-        Iterator<Node> iterator = getChildes().iterator();
-        while (iterator.hasNext()) {
-            Node child = iterator.next();
-            if (child == null) {
+        List<Node> childes = getChildes();
+        if (childes.size() == 0) {
+            return;
+        }
+        for (int i = 0;; i++) {
+            for (int j = i; j < childes.size(); j++) {
+                if (childes.get(j) == null) {
+                    i++;
+                }
+            }
+            if (i >= childes.size()) {
+                break;
+            }
+            if (i == childes.size() - 1 || childes.get(i + 1) == null) {
+                childes.get(i).toTreeishString(buffer, childPrefix + "└── ", childPrefix + "    ");
                 continue;
             }
-            if (iterator.hasNext()) {
-                child.toTreeishString(buffer, childPrefix + "├── ", childPrefix + "│   ");
-            } else {
-                child.toTreeishString(buffer, childPrefix + "└── ", childPrefix + "    ");
-            }
+            getChildes().get(i).toTreeishString(buffer, childPrefix + "├── ", childPrefix + "│   ");
         }
     }
 

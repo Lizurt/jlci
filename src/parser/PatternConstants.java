@@ -1,4 +1,4 @@
-package nodes.expression;
+package parser;
 
 import java.util.HashMap;
 
@@ -40,7 +40,7 @@ public abstract class PatternConstants {
 
     public static final HashMap<String, String> astTreeSoutDictionary = new HashMap<>();
     static {
-        boolean alternateSoutting = true;
+        boolean alternateSoutting = false;
         if (alternateSoutting) {
 // expressions
             astTreeSoutDictionary.put(SUM_OF, "+");
@@ -66,6 +66,7 @@ public abstract class PatternConstants {
             astTreeSoutDictionary.put(NO_WAI, "else");
             astTreeSoutDictionary.put(R, "=");
             astTreeSoutDictionary.put(HAI, "...");
+            astTreeSoutDictionary.put(IM_IN_YR, "for");
         } else {
             // expressions
             astTreeSoutDictionary.put(SUM_OF, SUM_OF);
@@ -91,6 +92,7 @@ public abstract class PatternConstants {
             astTreeSoutDictionary.put(NO_WAI, NO_WAI);
             astTreeSoutDictionary.put(R, R);
             astTreeSoutDictionary.put(HAI, HAI);
+            astTreeSoutDictionary.put(IM_IN_YR, IM_IN_YR);
         }
     }
 }

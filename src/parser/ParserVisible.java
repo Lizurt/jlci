@@ -2,7 +2,6 @@ package parser;
 
 import nodes.Node;
 import nodes.expression.NodeExpression;
-import nodes.expression.PatternConstants;
 import nodes.io.NodeVisible;
 
 public class ParserVisible extends PartialParser {

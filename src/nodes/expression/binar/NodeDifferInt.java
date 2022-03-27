@@ -1,7 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
-import nodes.expression.PatternConstants;
+import parser.PatternConstants;
 
 public class NodeDifferInt extends NodeBinaryExpression {
     public NodeDifferInt(Node leftOperand, Node rightOperand) {

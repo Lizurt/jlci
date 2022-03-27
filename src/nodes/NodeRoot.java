@@ -1,6 +1,6 @@
 package nodes;
 
-import nodes.expression.PatternConstants;
+import parser.PatternConstants;
 
 public class NodeRoot extends Node {
     private String version;

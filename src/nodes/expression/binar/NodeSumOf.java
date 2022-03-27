@@ -1,7 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
-import nodes.expression.PatternConstants;
+import parser.PatternConstants;
 
 public class NodeSumOf extends NodeBinaryExpression {
     public NodeSumOf(Node leftSide, Node rightSide) {

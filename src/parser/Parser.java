@@ -1,7 +1,6 @@
 package parser;
 
 import nodes.*;
-import nodes.expression.PatternConstants;
 import nodes.expression.NodeExpression;
 import nodes.expression.indivisible.NodeIdentifier;
 import nodes.expression.indivisible.NodeNumber;
@@ -56,13 +55,12 @@ public class Parser {
         if (isParse(PatternConstants.VISIBLE, true, true)) {
             return parserVisible.parse();
         }
-        parseIdentifier();
+        parseExpression();
         if (isParse(PatternConstants.R, true, true)) {
             return parserAssignation.parse();
         }
-        throw new InputMismatchException(
-                "Unacceptable symbol \"" + rawProgram.charAt(currPos) + "\" at position " + currPos + "."
-        );
+
+        return lastExpressionToken;
     }
 
     NodeExpression parseExpression() {

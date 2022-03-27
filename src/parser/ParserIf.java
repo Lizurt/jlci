@@ -1,7 +1,6 @@
 package parser;
 
 import nodes.Node;
-import nodes.expression.PatternConstants;
 import nodes.io.NodeNoWai;
 import nodes.io.NodeORly;
 import nodes.io.NodeYaRly;

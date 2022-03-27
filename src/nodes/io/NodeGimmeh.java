@@ -1,7 +1,7 @@
 package nodes.io;
 
 import nodes.Node;
-import nodes.expression.PatternConstants;
+import parser.PatternConstants;
 import nodes.expression.indivisible.NodeIdentifier;
 
 public class NodeGimmeh extends Node {

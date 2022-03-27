@@ -2,7 +2,7 @@ package nodes.io;
 
 import nodes.Node;
 import nodes.expression.NodeExpression;
-import nodes.expression.PatternConstants;
+import parser.PatternConstants;
 import nodes.expression.indivisible.NodeIdentifier;
 
 public class NodeImInYr extends Node {

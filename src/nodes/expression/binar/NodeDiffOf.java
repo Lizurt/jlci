@@ -1,7 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
-import nodes.expression.PatternConstants;
+import parser.PatternConstants;
 
 public class NodeDiffOf extends NodeBinaryExpression {
     public NodeDiffOf(Node leftSide, Node rightSide) {

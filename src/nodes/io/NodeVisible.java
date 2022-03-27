@@ -2,7 +2,7 @@ package nodes.io;
 
 import nodes.Node;
 import nodes.expression.NodeExpression;
-import nodes.expression.PatternConstants;
+import parser.PatternConstants;
 
 public class NodeVisible extends Node {
     private NodeExpression expression;

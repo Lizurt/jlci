@@ -1,7 +1,7 @@
 package nodes;
 
 import nodes.expression.NodeExpression;
-import nodes.expression.PatternConstants;
+import parser.PatternConstants;
 import nodes.expression.indivisible.NodeIdentifier;
 
 public class NodeAssignation extends Node {

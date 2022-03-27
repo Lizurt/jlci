@@ -1,7 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
-import nodes.expression.PatternConstants;
+import parser.PatternConstants;
 
 public class NodeBothSaem extends NodeBinaryExpression {
     public NodeBothSaem(Node leftOperand, Node rightOperand) {

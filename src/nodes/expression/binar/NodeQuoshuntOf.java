@@ -1,7 +1,7 @@
 package nodes.expression.binar;
 
 import nodes.Node;
-import nodes.expression.PatternConstants;
+import parser.PatternConstants;
 
 public class NodeQuoshuntOf extends NodeBinaryExpression {
     public NodeQuoshuntOf(Node leftOperand, Node rightOperand) {
