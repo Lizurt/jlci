@@ -14,7 +14,6 @@ public class ParserVisible extends PartialParser {
     public Node parse() {
         getMainParser().parse(PatternConstants.VISIBLE, true, true);
         NodeExpression expression = getMainParser().parseExpression();
-        getMainParser().lastExpressionToken = expression;
         return new NodeVisible(expression);
     }
 }

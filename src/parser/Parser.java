@@ -7,7 +7,6 @@ import nodes.expression.indivisible.NodeIdentifier;
 import nodes.expression.indivisible.NodeNumber;
 import nodes.expression.binar.*;
 import nodes.expression.unar.NodeUnaryExpression;
-import nodes.io.*;
 
 import java.util.InputMismatchException;
 
@@ -15,7 +14,6 @@ public class Parser {
     final String rawProgram;
     int currPos = 0;
     NodeExpression lastExpressionToken;
-    NodeIdentifier lastIdentifierToken;
 
     private ParserIf parserIf = new ParserIf(this);
     private ParserLoop parserLoop = new ParserLoop(this);
@@ -58,7 +56,7 @@ public class Parser {
         if (isParse(PatternConstants.VISIBLE, true, true)) {
             return parserVisible.parse();
         }
-        lastIdentifierToken = parseIdentifier();
+        parseIdentifier();
         if (isParse(PatternConstants.R, true, true)) {
             return parserAssignation.parse();
         }
@@ -161,11 +159,12 @@ public class Parser {
             throw new InputMismatchException(PatternConstants.AN + " is missing in the expression.");
         }
         outerExpression.setRightOperand(parseExpression());
+        lastExpressionToken = outerExpression;
         return outerExpression;
     }
 
     NodeExpression parseExpression(NodeUnaryExpression outerExpression) {
-        // todo: unary expressions
+        lastExpressionToken = outerExpression;
         return null;
     }
 
@@ -190,7 +189,9 @@ public class Parser {
             }
             break;
         }
-        return new NodeNumber(Double.parseDouble(rawProgram.substring(fromPos, currPos)));
+        NodeNumber result = new NodeNumber(Double.parseDouble(rawProgram.substring(fromPos, currPos)));
+        lastExpressionToken = result;
+        return result;
     }
 
     NodeIdentifier parseIdentifier() {
@@ -207,7 +208,9 @@ public class Parser {
             currPos++;
         }
         if (Character.isWhitespace(rawProgram.charAt(currPos))) {
-            return new NodeIdentifier(rawProgram.substring(fromPos, currPos));
+            NodeIdentifier result = new NodeIdentifier(rawProgram.substring(fromPos, currPos));
+            lastExpressionToken = result;
+            return result;
         }
         throw new InputMismatchException("Vars cannot contain such symbols: " + rawProgram.charAt(currPos) + ".");
     }

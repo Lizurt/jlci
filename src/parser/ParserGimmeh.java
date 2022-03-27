@@ -14,7 +14,6 @@ public class ParserGimmeh extends PartialParser {
     public Node parse() {
         getMainParser().parse(PatternConstants.GIMMEH, true, true);
         NodeIdentifier identifier = getMainParser().parseIdentifier();
-        getMainParser().lastExpressionToken = identifier;
         return new NodeGimmeh(identifier);
     }
 }
