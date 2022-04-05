@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/lcc.iml" filepath="$PROJECT_DIR$/lcc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jlci.iml" filepath="$PROJECT_DIR$/jlci.iml" />
     </modules>
   </component>
 </project>

@@ -20,4 +20,13 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+    void test() {
+        double a = 3.4d;
+        double b = 11d;
+        double c = a + b;
+        if (c > 50) {
+            return;
+        }
+    }
 }
