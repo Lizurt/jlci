@@ -14,7 +14,7 @@ public class Compiler {
     public static byte[] compile(String className, Node root) {
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 
-        // hi im public class called className working on version 1.8 and extendning virtual machine
+        // hi im public class called className working on version 1.8 and extendning java Object
         classWriter.visit(
                 Opcodes.V1_8,
                 Opcodes.ACC_PUBLIC | Opcodes.ACC_SUPER,
