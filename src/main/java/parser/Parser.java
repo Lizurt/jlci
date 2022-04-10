@@ -19,6 +19,7 @@ public class Parser {
     private ParserVisible parserVisible = new ParserVisible(this);
     private ParserGimmeh parserGimmeh = new ParserGimmeh(this);
     private ParserAssignation parserAssignation = new ParserAssignation(this);
+    private ParserFunction parserFunction = new ParserFunction(this);
 
     public Parser(final String rawProgram) {
         this.rawProgram = rawProgram;
@@ -58,6 +59,9 @@ public class Parser {
         parseExpression();
         if (isParse(PatternConstants.R, true, true)) {
             return parserAssignation.parse();
+        }
+        if(isParse(PatternConstants.HOW_IZ_I, true, true)) {
+            return parserFunction.parse();
         }
 
         return lastExpressionToken;
