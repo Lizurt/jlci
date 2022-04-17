@@ -42,7 +42,7 @@ public class NodeImInYr extends Node {
         }
 
         loopName.semanticCheckIfNotExists();
-        // beside the fact that var init in lolcode comes after its usage, we gotta init the var before it anyway
+        // despite the fact that var init in lolcode comes after its usage, we gotta init the var before it anyway
         varInit.checkAndFixSemantic();
         afterLoopAction.checkAndFixSemantic();
         whileCondition.checkAndFixSemantic();
