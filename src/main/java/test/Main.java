@@ -1,5 +1,7 @@
 package test;
 
+import compiler.SemanticAnalyser;
+import nodes.NodeRoot;
 import parser.Parser;
 
 import java.io.FileReader;
@@ -15,7 +17,10 @@ public class Main {
                 stringBuilder.append((char) symbol);
             }
             Parser parser = new Parser(stringBuilder.toString());
-            System.out.println(parser.parse().toTreeishString());
+            NodeRoot nodeRoot = parser.parse();
+            SemanticAnalyser semanticAnalyser = new SemanticAnalyser();
+            semanticAnalyser.checkAndFixASTTree(nodeRoot);
+            System.out.println(nodeRoot.toTreeishString());
         } catch (IOException e) {
             e.printStackTrace();
         }

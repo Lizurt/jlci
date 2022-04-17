@@ -2,7 +2,7 @@ package nodes.io;
 
 import nodes.Node;
 import parser.PatternConstants;
-import nodes.expression.indivisible.NodeIdentifier;
+import nodes.expression.indivisible.identifiers.NodeIdentifier;
 
 public class NodeGimmeh extends Node {
     private NodeIdentifier identifier;
@@ -24,5 +24,11 @@ public class NodeGimmeh extends Node {
     @Override
     public String toString() {
         return PatternConstants.astTreeSoutDictionary.get(PatternConstants.GIMMEH);
+    }
+
+    @Override
+    public void checkAndFixSemantic() {
+        identifier.setScope(getScope());
+        identifier.checkAndFixSemantic();
     }
 }

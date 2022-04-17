@@ -1,10 +1,12 @@
 package nodes.expression.binar;
 
+import nodes.expression.NodeExpression;
+
 import nodes.Node;
 import parser.PatternConstants;
 
 public class NodeEitherOf extends NodeBinaryExpression {
-    public NodeEitherOf(Node leftOperand, Node rightOperand) {
+    public NodeEitherOf(NodeExpression leftOperand, NodeExpression rightOperand) {
         super(leftOperand, rightOperand);
     }
 

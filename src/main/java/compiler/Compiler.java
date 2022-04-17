@@ -1,6 +1,7 @@
 package compiler;
 
 import nodes.Node;
+import nodes.NodeRoot;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -8,10 +9,10 @@ import org.objectweb.asm.Opcodes;
 public class Compiler {
     private static int counter = 0;
     private static int ID_SELF = 0;
-    private static int ID_OUTPUT_STREAM = 3;
-    private static int ID_INPUT_STREAM = 4;
+    private static int ID_OUTPUT_STREAM = 1;
+    private static int ID_INPUT_STREAM = 2;
 
-    public static byte[] compile(String className, Node root) {
+    public static byte[] compile(String className, NodeRoot root) {
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 
         // hi im public class called className working on version 1.8 and extendning java Object
@@ -66,8 +67,8 @@ public class Compiler {
         );
         mainMethodVisitor.visitVarInsn(Opcodes.ASTORE, ID_INPUT_STREAM);
 
-        for (Node child : root.getChildes()) {
-            // todo: compile the whole tree
+        for (Node statement : root.getChildes()) {
+            statement.compile(classWriter, mainMethodVisitor);
         }
 
         mainMethodVisitor.visitInsn(Opcodes.RETURN);

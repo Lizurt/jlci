@@ -2,7 +2,7 @@ package nodes;
 
 import nodes.expression.NodeExpression;
 import parser.PatternConstants;
-import nodes.expression.indivisible.NodeIdentifier;
+import nodes.expression.indivisible.identifiers.NodeIdentifier;
 
 public class NodeAssignation extends Node {
     private NodeExpression expression;
@@ -36,5 +36,16 @@ public class NodeAssignation extends Node {
     @Override
     public String toString() {
         return PatternConstants.astTreeSoutDictionary.get(PatternConstants.R);
+    }
+
+    @Override
+    public void checkAndFixSemantic() {
+        expression.setScope(getScope());
+        identifier.setScope(getScope());
+        expression.checkAndFixSemantic();
+        if (identifier.getScope().tryGetVariableByName(identifier.getName()) != null) {
+            return;
+        }
+        identifier.getScope().unsafelyAddIdentifierToScope(identifier.getName());
     }
 }

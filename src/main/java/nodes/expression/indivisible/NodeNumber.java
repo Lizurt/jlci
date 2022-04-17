@@ -14,6 +14,11 @@ public class NodeNumber extends NodeExpression {
         return String.valueOf(value);
     }
 
+    @Override
+    public void checkAndFixSemantic() {
+
+    }
+
     public double getValue() {
         return value;
     }

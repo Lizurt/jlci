@@ -1,10 +1,15 @@
 package nodes;
 
+import compiler.Scope;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Node {
     private final List<Node> childes = new ArrayList<>();
+    private Scope scope;
 
     @Override
     public abstract String toString();
@@ -40,11 +45,23 @@ public abstract class Node {
         }
     }
 
+    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {}
+
+    public abstract void checkAndFixSemantic();
+
     public List<Node> getChildes() {
         return childes;
     }
 
     public void addChild(Node child) {
         childes.add(child);
+    }
+
+    public Scope getScope() {
+        return scope;
+    }
+
+    public void setScope(Scope scope) {
+        this.scope = scope;
     }
 }

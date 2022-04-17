@@ -1,10 +1,12 @@
 package nodes.expression.binar;
 
+import nodes.expression.NodeExpression;
+
 import nodes.Node;
 import parser.PatternConstants;
 
-public class NodeDifferInt extends NodeBinaryExpression {
-    public NodeDifferInt(Node leftOperand, Node rightOperand) {
+public class NodeDiffrint extends NodeBinaryExpression {
+    public NodeDiffrint(NodeExpression leftOperand, NodeExpression rightOperand) {
         super(leftOperand, rightOperand);
     }
 

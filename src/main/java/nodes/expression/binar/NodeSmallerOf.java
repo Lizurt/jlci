@@ -1,10 +1,12 @@
 package nodes.expression.binar;
 
+import nodes.expression.NodeExpression;
+
 import nodes.Node;
 import parser.PatternConstants;
 
 public class NodeSmallerOf extends NodeBinaryExpression {
-    public NodeSmallerOf(Node leftOperand, Node rightOperand) {
+    public NodeSmallerOf(NodeExpression leftOperand, NodeExpression rightOperand) {
         super(leftOperand, rightOperand);
     }
 

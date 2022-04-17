@@ -25,4 +25,10 @@ public class NodeVisible extends Node {
         this.expression = expression;
         getChildes().set(0, expression);
     }
+
+    @Override
+    public void checkAndFixSemantic() {
+        expression.setScope(getScope());
+        expression.checkAndFixSemantic();
+    }
 }

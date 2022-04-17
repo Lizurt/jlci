@@ -1,7 +1,7 @@
 package parser;
 
 import nodes.Node;
-import nodes.expression.indivisible.NodeIdentifier;
+import nodes.expression.indivisible.identifiers.NodeIdentifier;
 
 import java.util.InputMismatchException;
 

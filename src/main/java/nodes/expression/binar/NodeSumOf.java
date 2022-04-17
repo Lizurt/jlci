@@ -1,11 +1,13 @@
 package nodes.expression.binar;
 
+import nodes.expression.NodeExpression;
+
 import nodes.Node;
 import parser.PatternConstants;
 
 public class NodeSumOf extends NodeBinaryExpression {
-    public NodeSumOf(Node leftSide, Node rightSide) {
-        super(leftSide, rightSide);
+    public NodeSumOf(NodeExpression leftOperand, NodeExpression rightOperand) {
+        super(leftOperand, rightOperand);
     }
 
     @Override

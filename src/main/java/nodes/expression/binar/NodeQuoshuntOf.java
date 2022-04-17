@@ -1,10 +1,12 @@
 package nodes.expression.binar;
 
+import nodes.expression.NodeExpression;
+
 import nodes.Node;
 import parser.PatternConstants;
 
 public class NodeQuoshuntOf extends NodeBinaryExpression {
-    public NodeQuoshuntOf(Node leftOperand, Node rightOperand) {
+    public NodeQuoshuntOf(NodeExpression leftOperand, NodeExpression rightOperand) {
         super(leftOperand, rightOperand);
     }
 
