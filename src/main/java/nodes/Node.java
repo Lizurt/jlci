@@ -45,7 +45,7 @@ public abstract class Node {
         }
     }
 
-    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {}
+    public abstract void compile(ClassWriter classWriter, MethodVisitor methodVisitor);
 
     public abstract void checkAndFixSemantic();
 

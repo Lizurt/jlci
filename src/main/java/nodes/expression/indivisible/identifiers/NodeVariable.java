@@ -1,5 +1,9 @@
 package nodes.expression.indivisible.identifiers;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
 import java.util.InputMismatchException;
 
 public class NodeVariable extends NodeIdentifier {
@@ -23,5 +27,10 @@ public class NodeVariable extends NodeIdentifier {
         }
 
         throw new InputMismatchException("A variable \"" + getName() + "\" is already defined in the scope.");
+    }
+
+    @Override
+    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
+        methodVisitor.visitVarInsn(Opcodes.DLOAD, getScope().tryGetVariableByName(getName()).getIndex());
     }
 }

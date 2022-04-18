@@ -7,10 +7,11 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 public class Compiler {
-    private static int counter = 0;
-    private static int ID_SELF = 0;
-    private static int ID_OUTPUT_STREAM = 1;
-    private static int ID_INPUT_STREAM = 2;
+    public final static int counter = 0;
+    public final static int ID_SELF = 0;
+    public final static int ID_OUTPUT_STREAM = 1;
+    public final static int ID_INPUT_STREAM = 2;
+    public final static int ID_LAST_EXPRESSION = 3;
 
     public static byte[] compile(String className, NodeRoot root) {
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);

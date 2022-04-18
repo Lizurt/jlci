@@ -11,16 +11,16 @@ import nodes.expression.unar.NodeUnaryExpression;
 
 import java.util.InputMismatchException;
 
-public class Parser {
-    final String rawProgram;
-    int currPos = 0;
-    NodeExpression lastExpressionToken;
+    public class Parser {
+        final String rawProgram;
+        int currPos = 0;
+        NodeExpression lastExpressionToken;
 
-    private ParserIf parserIf = new ParserIf(this);
-    private ParserLoop parserLoop = new ParserLoop(this);
-    private ParserVisible parserVisible = new ParserVisible(this);
-    private ParserGimmeh parserGimmeh = new ParserGimmeh(this);
-    private ParserAssignation parserAssignation = new ParserAssignation(this);
+        private ParserIf parserIf = new ParserIf(this);
+        private ParserLoop parserLoop = new ParserLoop(this);
+        private ParserVisible parserVisible = new ParserVisible(this);
+        private ParserGimmeh parserGimmeh = new ParserGimmeh(this);
+        private ParserAssignation parserAssignation = new ParserAssignation(this);
 
     public Parser(final String rawProgram) {
         this.rawProgram = rawProgram;
@@ -88,14 +88,6 @@ public class Parser {
         if (isParse(PatternConstants.QUOSHUNT_OF, true, true)) {
             parse(PatternConstants.QUOSHUNT_OF, true, true);
             return parseExpression(new NodeQuoshuntOf(null, null));
-        }
-        if (isParse(PatternConstants.BIGGER_OF, true, true)) {
-            parse(PatternConstants.BIGGER_OF, true, true);
-            return parseExpression(new NodeBiggerOf(null, null));
-        }
-        if (isParse(PatternConstants.SMALLER_OF, true, true)) {
-            parse(PatternConstants.SMALLER_OF, true, true);
-            return parseExpression(new NodeSmallerOf(null, null));
         }
         if (isParse(PatternConstants.BOTH_OF, true, true)) {
             parse(PatternConstants.BOTH_OF, true, true);
@@ -215,8 +207,8 @@ public class Parser {
         }
     }
 
-    NodeAssignation parseAssignation(NodeIdentifier identifier) {
-        return new NodeAssignation(identifier, parseExpression());
+    NodeAssignation parseAssignation(NodeVariable variable) {
+        return new NodeAssignation(variable, parseExpression());
     }
 
     boolean isParse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {

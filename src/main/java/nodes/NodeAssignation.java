@@ -1,14 +1,19 @@
 package nodes;
 
+import compiler.Compiler;
+import compiler.Identifier;
 import nodes.expression.NodeExpression;
+import nodes.expression.indivisible.identifiers.NodeVariable;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 import parser.PatternConstants;
-import nodes.expression.indivisible.identifiers.NodeIdentifier;
 
 public class NodeAssignation extends Node {
     private NodeExpression expression;
-    private NodeIdentifier identifier;
+    private NodeVariable identifier;
 
-    public NodeAssignation(NodeIdentifier identifier, NodeExpression expression) {
+    public NodeAssignation(NodeVariable identifier, NodeExpression expression) {
         this.identifier = identifier;
         this.expression = expression;
         addChild(identifier);
@@ -24,11 +29,11 @@ public class NodeAssignation extends Node {
         getChildes().set(1, expression);
     }
 
-    public NodeIdentifier getIdentifier() {
+    public NodeVariable getIdentifier() {
         return identifier;
     }
 
-    public void setIdentifier(NodeIdentifier identifier) {
+    public void setIdentifier(NodeVariable identifier) {
         this.identifier = identifier;
         getChildes().set(0, identifier);
     }
@@ -39,6 +44,15 @@ public class NodeAssignation extends Node {
     }
 
     @Override
+    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
+        expression.compile(classWriter, methodVisitor);
+        int index = getScope().getScopeManager().findOrGenerateIndexForVariable(getScope(), identifier.getName());
+        methodVisitor.visitInsn(Opcodes.DUP);
+        methodVisitor.visitVarInsn(Opcodes.DSTORE, index);
+        methodVisitor.visitVarInsn(Opcodes.DSTORE, Compiler.ID_LAST_EXPRESSION);
+    }
+
+    @Override
     public void checkAndFixSemantic() {
         expression.setScope(getScope());
         identifier.setScope(getScope());
@@ -46,6 +60,10 @@ public class NodeAssignation extends Node {
         if (identifier.getScope().tryGetVariableByName(identifier.getName()) != null) {
             return;
         }
-        identifier.getScope().unsafelyAddIdentifierToScope(identifier.getName());
+        identifier.getScope().unsafelyAddVariableToScope(
+                new Identifier(
+                        identifier.getName(), identifier.getScope().getScopeManager().getAndProceedAvailableIndex()
+                )
+        );
     }
 }

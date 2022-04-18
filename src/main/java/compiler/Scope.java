@@ -48,8 +48,16 @@ public class Scope {
         return tryGetIdentifierByName(name, getLabels());
     }
 
-    public void unsafelyAddIdentifierToScope(String name) {
-        variables.add(new Identifier(name, scopeManager.getNextAvailableIndex()));
+    public void unsafelyAddVariableToScope(Identifier identifier) {
+        variables.add(identifier);
+    }
+
+    public void unsafelyAddLabelToScope(Identifier identifier) {
+        labels.add(identifier);
+    }
+
+    public void unsafelyAddFunctionToScope(Identifier identifier) {
+        functions.add(identifier);
     }
 
     public Scope getParentScope() {

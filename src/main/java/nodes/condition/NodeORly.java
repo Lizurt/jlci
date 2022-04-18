@@ -3,6 +3,10 @@ package nodes.condition;
 import compiler.Scope;
 import nodes.Node;
 import nodes.expression.NodeExpression;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 import parser.PatternConstants;
 
 import java.util.InputMismatchException;
@@ -21,6 +25,23 @@ public class NodeORly extends Node {
     @Override
     public String toString() {
         return PatternConstants.astTreeSoutDictionary.get(PatternConstants.O_RLY);
+    }
+
+    @Override
+    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
+        condition.compile(classWriter, methodVisitor);
+        methodVisitor.visitInsn(Opcodes.DCONST_1);
+        methodVisitor.visitInsn(Opcodes.DCMPL);
+        methodVisitor.visitInsn(Opcodes.DCONST_1);
+        Label lEnd = new Label();
+        Label lElse = new Label();
+        methodVisitor.visitJumpInsn(Opcodes.IFLT, nodeNoWai == null ? lEnd : lElse);
+        nodeYaRly.compile(classWriter, methodVisitor);
+        if (nodeNoWai != null) {
+            methodVisitor.visitLabel(lElse);
+            nodeNoWai.compile(classWriter, methodVisitor);
+        }
+        methodVisitor.visitLabel(lEnd);
     }
 
     @Override

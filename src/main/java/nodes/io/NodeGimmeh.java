@@ -1,6 +1,8 @@
 package nodes.io;
 
 import nodes.Node;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 import parser.PatternConstants;
 import nodes.expression.indivisible.identifiers.NodeIdentifier;
 
@@ -24,6 +26,11 @@ public class NodeGimmeh extends Node {
     @Override
     public String toString() {
         return PatternConstants.astTreeSoutDictionary.get(PatternConstants.GIMMEH);
+    }
+
+    @Override
+    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
+
     }
 
     @Override

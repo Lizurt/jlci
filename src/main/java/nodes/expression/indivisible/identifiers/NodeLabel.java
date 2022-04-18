@@ -1,5 +1,8 @@
 package nodes.expression.indivisible.identifiers;
 
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+
 import java.util.InputMismatchException;
 
 public class NodeLabel extends NodeIdentifier {
@@ -23,5 +26,10 @@ public class NodeLabel extends NodeIdentifier {
         }
 
         throw new InputMismatchException("A label \"" + getName() + "\" is already defined in the scope.");
+    }
+
+    @Override
+    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
+
     }
 }

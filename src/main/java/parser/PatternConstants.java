@@ -22,6 +22,7 @@ public abstract class PatternConstants {
     public static final String YA_RLY = "YA RLY";
     public static final String NO_WAI = "NO WAI";
     public static final String R = "R";
+    public static final String I_HAS_A = "I HAS A";
     public static final String HAI = "HAI";
     public static final String IM_IN_YR = "IM IN YR";
 
@@ -57,6 +58,7 @@ public abstract class PatternConstants {
             astTreeSoutDictionary.put(YA_RLY, "then");
             astTreeSoutDictionary.put(NO_WAI, "else");
             astTreeSoutDictionary.put(R, "=");
+            astTreeSoutDictionary.put(I_HAS_A, "=");
             astTreeSoutDictionary.put(HAI, "...");
             astTreeSoutDictionary.put(IM_IN_YR, "for");
         } else {
@@ -79,6 +81,7 @@ public abstract class PatternConstants {
             astTreeSoutDictionary.put(YA_RLY, YA_RLY);
             astTreeSoutDictionary.put(NO_WAI, NO_WAI);
             astTreeSoutDictionary.put(R, R);
+            astTreeSoutDictionary.put(I_HAS_A, I_HAS_A);
             astTreeSoutDictionary.put(HAI, HAI);
             astTreeSoutDictionary.put(IM_IN_YR, IM_IN_YR);
         }

@@ -6,11 +6,14 @@ import nodes.NodeAssignation;
 import nodes.NodeStatements;
 import nodes.expression.NodeExpression;
 import nodes.expression.indivisible.identifiers.NodeLabel;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 import parser.PatternConstants;
 import nodes.expression.indivisible.identifiers.NodeIdentifier;
 
 public class NodeImInYr extends Node {
-
     private NodeLabel loopName;
     private Node afterLoopAction;
     private NodeAssignation varInit;
@@ -28,6 +31,21 @@ public class NodeImInYr extends Node {
     @Override
     public String toString() {
         return PatternConstants.astTreeSoutDictionary.get(PatternConstants.IM_IN_YR);
+    }
+
+    @Override
+    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
+        Label lLoopStart = new Label();
+        Label lLoopEnd = new Label();
+        varInit.compile(classWriter, methodVisitor);
+        methodVisitor.visitLabel(lLoopStart);
+        whileCondition.compile(classWriter, methodVisitor);
+        methodVisitor.visitInsn(Opcodes.DCONST_1);
+        methodVisitor.visitJumpInsn(Opcodes.IFLT, lLoopEnd);
+        statements.compile(classWriter, methodVisitor);
+        afterLoopAction.compile(classWriter, methodVisitor);
+        methodVisitor.visitJumpInsn(Opcodes.GOTO, lLoopStart);
+        methodVisitor.visitLabel(lLoopEnd);
     }
 
     @Override
