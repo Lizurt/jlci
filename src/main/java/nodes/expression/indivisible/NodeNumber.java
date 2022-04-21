@@ -6,9 +6,9 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 public class NodeNumber extends NodeExpression {
-    private double value;
+    private float value;
 
-    public NodeNumber(double value) {
+    public NodeNumber(float value) {
         this.value = value;
     }
 
@@ -19,8 +19,7 @@ public class NodeNumber extends NodeExpression {
 
     @Override
     public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
-        // todo: uhmmm... we can push only 0d or 1d or any other short int, but not other doubles
-        methodVisitor.visitInsn(Opcodes.DCONST_1);
+        methodVisitor.visitLdcInsn(getValue());
     }
 
     @Override
@@ -28,11 +27,11 @@ public class NodeNumber extends NodeExpression {
 
     }
 
-    public double getValue() {
+    public float getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(float value) {
         this.value = value;
     }
 }

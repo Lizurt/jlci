@@ -113,6 +113,7 @@ import java.util.InputMismatchException;
         if (
                 Character.isDigit(rawProgram.charAt(currPos + fakeWhitespacesSkipLen))
                         || rawProgram.charAt(currPos + fakeWhitespacesSkipLen) == '.'
+                        || rawProgram.charAt(currPos + fakeWhitespacesSkipLen) == '-'
         ) {
             return parseNumber();
         }
@@ -146,6 +147,11 @@ import java.util.InputMismatchException;
 
     NodeNumber parseNumber() {
         consumeWhitespaces();
+        boolean negate = false;
+        if (rawProgram.charAt(currPos) == '-') {
+            negate = true;
+            currPos++;
+        }
         int fromPos = currPos;
         boolean alreadyHadDot = false;
         while (true) {
@@ -165,7 +171,11 @@ import java.util.InputMismatchException;
             }
             break;
         }
-        NodeNumber result = new NodeNumber(Double.parseDouble(rawProgram.substring(fromPos, currPos)));
+        float value = Float.parseFloat(rawProgram.substring(fromPos, currPos));
+        if (negate) {
+            value = -value;
+        }
+        NodeNumber result = new NodeNumber(value);
         lastExpressionToken = result;
         return result;
     }

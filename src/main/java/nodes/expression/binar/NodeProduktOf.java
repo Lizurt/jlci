@@ -22,6 +22,6 @@ public class NodeProduktOf extends NodeBinaryExpression {
     public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
         getLeftOperand().compile(classWriter, methodVisitor);
         getRightOperand().compile(classWriter, methodVisitor);
-        methodVisitor.visitInsn(Opcodes.DMUL);
+        methodVisitor.visitInsn(Opcodes.FMUL);
     }
 }

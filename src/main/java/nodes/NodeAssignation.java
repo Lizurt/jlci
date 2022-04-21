@@ -48,8 +48,8 @@ public class NodeAssignation extends Node {
         expression.compile(classWriter, methodVisitor);
         int index = getScope().getScopeManager().findOrGenerateIndexForVariable(getScope(), identifier.getName());
         methodVisitor.visitInsn(Opcodes.DUP);
-        methodVisitor.visitVarInsn(Opcodes.DSTORE, index);
-        methodVisitor.visitVarInsn(Opcodes.DSTORE, Compiler.ID_LAST_EXPRESSION);
+        methodVisitor.visitVarInsn(Opcodes.FSTORE, index);
+        methodVisitor.visitVarInsn(Opcodes.FSTORE, Compiler.ID_LAST_EXPRESSION);
     }
 
     @Override

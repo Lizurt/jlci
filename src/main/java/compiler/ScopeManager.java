@@ -1,7 +1,7 @@
 package compiler;
 
 public class ScopeManager {
-    private int indexCounter = 0;
+    private int indexCounter = 8;
 
     public int getAndProceedAvailableIndex() {
         return indexCounter++;

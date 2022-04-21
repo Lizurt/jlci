@@ -13,6 +13,8 @@ import org.objectweb.asm.Opcodes;
 import parser.PatternConstants;
 import nodes.expression.indivisible.identifiers.NodeIdentifier;
 
+import java.util.concurrent.RecursiveTask;
+
 public class NodeImInYr extends Node {
     private NodeLabel loopName;
     private Node afterLoopAction;
@@ -40,8 +42,9 @@ public class NodeImInYr extends Node {
         varInit.compile(classWriter, methodVisitor);
         methodVisitor.visitLabel(lLoopStart);
         whileCondition.compile(classWriter, methodVisitor);
-        methodVisitor.visitInsn(Opcodes.DCONST_1);
-        methodVisitor.visitJumpInsn(Opcodes.IFLT, lLoopEnd);
+        methodVisitor.visitInsn(Opcodes.FCONST_0);
+        methodVisitor.visitInsn(Opcodes.FCMPG);
+        methodVisitor.visitJumpInsn(Opcodes.IFLE, lLoopEnd);
         statements.compile(classWriter, methodVisitor);
         afterLoopAction.compile(classWriter, methodVisitor);
         methodVisitor.visitJumpInsn(Opcodes.GOTO, lLoopStart);

@@ -18,7 +18,7 @@ public class NodeNot extends NodeUnaryExpression {
 
     @Override
     public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
-        methodVisitor.visitInsn(Opcodes.DCONST_0);
-        methodVisitor.visitInsn(Opcodes.DCMPG);
+        methodVisitor.visitInsn(Opcodes.FCONST_0);
+        methodVisitor.visitInsn(Opcodes.FCMPG);
     }
 }

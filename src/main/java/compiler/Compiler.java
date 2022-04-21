@@ -1,24 +1,28 @@
 package compiler;
 
-import nodes.Node;
 import nodes.NodeRoot;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import java.io.PrintStream;
+import java.util.Locale;
+import java.util.Scanner;
+
 public class Compiler {
     public final static int counter = 0;
-    public final static int ID_SELF = 0;
+    public final static int ID_THIS = 0;
     public final static int ID_OUTPUT_STREAM = 1;
     public final static int ID_INPUT_STREAM = 2;
     public final static int ID_LAST_EXPRESSION = 3;
+    public final static int ID_SCANNER = 4;
 
-    public static byte[] compile(String className, NodeRoot root) {
-        ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+    public static byte[] compile(String className, String methodName, NodeRoot root) {
+        ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+        MethodVisitor methodVisitor;
 
-        // hi im public class called className working on version 1.8 and extendning java Object
         classWriter.visit(
-                Opcodes.V1_8,
+                Opcodes.V11,
                 Opcodes.ACC_PUBLIC | Opcodes.ACC_SUPER,
                 className,
                 null,
@@ -26,56 +30,80 @@ public class Compiler {
                 null
         );
 
-        // initialization
-        MethodVisitor initMethodVisitor = classWriter.visitMethod(
+        methodVisitor = classWriter.visitMethod(
                 Opcodes.ACC_PUBLIC,
                 "<init>",
                 "()V",
                 null,
                 null
         );
-        initMethodVisitor.visitVarInsn(Opcodes.ALOAD, ID_SELF);
-        initMethodVisitor.visitMethodInsn(
+        methodVisitor.visitVarInsn(Opcodes.ALOAD, ID_THIS);
+        methodVisitor.visitMethodInsn(
                 Opcodes.INVOKESPECIAL,
                 Object.class.getName().replace('.', '/'),
                 "<init>",
                 "()V",
                 false
         );
-        initMethodVisitor.visitInsn(Opcodes.RETURN);
-        initMethodVisitor.visitEnd();
+        methodVisitor.visitInsn(Opcodes.RETURN);
+        methodVisitor.visitMaxs(8, 8);
+        methodVisitor.visitEnd();
 
-        // main logic
-        MethodVisitor mainMethodVisitor = classWriter.visitMethod(
+        methodVisitor = classWriter.visitMethod(
                 Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC,
-                "execute",
+                methodName,
                 "()V",
                 null,
                 null
         );
-        mainMethodVisitor.visitFieldInsn(
+
+        methodVisitor.visitFieldInsn(
                 Opcodes.GETSTATIC,
-                "java/lang/System",
+                System.class.getName().replace('.', '/'),
                 "out",
                 "Ljava/io/PrintStream;"
         );
-        mainMethodVisitor.visitVarInsn(Opcodes.ASTORE, ID_OUTPUT_STREAM);
-        mainMethodVisitor.visitFieldInsn(
+        methodVisitor.visitVarInsn(Opcodes.ASTORE, ID_OUTPUT_STREAM);
+
+        methodVisitor.visitFieldInsn(
                 Opcodes.GETSTATIC,
-                "java/lang/System",
+                System.class.getName().replace('.', '/'),
                 "in",
                 "Ljava/io/InputStream;"
         );
-        mainMethodVisitor.visitVarInsn(Opcodes.ASTORE, ID_INPUT_STREAM);
+        methodVisitor.visitVarInsn(Opcodes.ASTORE, ID_INPUT_STREAM);
 
-        for (Node statement : root.getChildes()) {
-            statement.compile(classWriter, mainMethodVisitor);
-        }
+        methodVisitor.visitTypeInsn(Opcodes.NEW, Scanner.class.getName().replace('.', '/'));
+        methodVisitor.visitVarInsn(Opcodes.ASTORE, ID_SCANNER);
+        methodVisitor.visitVarInsn(Opcodes.ALOAD, ID_SCANNER);
+        methodVisitor.visitVarInsn(Opcodes.ALOAD, ID_INPUT_STREAM);
+        methodVisitor.visitMethodInsn(
+                Opcodes.INVOKESPECIAL,
+                Scanner.class.getName().replace('.', '/'),
+                "<init>",
+                "(Ljava/io/InputStream;)V",
+                false
+        );
+        methodVisitor.visitVarInsn(Opcodes.ALOAD, ID_SCANNER);
+        methodVisitor.visitFieldInsn(
+                Opcodes.GETSTATIC,
+                Locale.class.getName().replace('.', '/'),
+                "US",
+                "Ljava/util/Locale;"
+        );
+        methodVisitor.visitMethodInsn(
+                Opcodes.INVOKEVIRTUAL,
+                Scanner.class.getName().replace('.', '/'),
+                "useLocale",
+                "(Ljava/util/Locale;)Ljava/util/Scanner;",
+                false
+        );
 
-        mainMethodVisitor.visitInsn(Opcodes.RETURN);
-        mainMethodVisitor.visitEnd();
+        root.compile(classWriter, methodVisitor);
+        methodVisitor.visitInsn(Opcodes.RETURN);
+        methodVisitor.visitMaxs(4096, 4096);
+        methodVisitor.visitEnd();
         classWriter.visitEnd();
-
         return classWriter.toByteArray();
     }
 }

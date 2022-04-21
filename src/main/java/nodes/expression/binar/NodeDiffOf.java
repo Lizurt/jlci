@@ -23,7 +23,7 @@ public class NodeDiffOf extends NodeBinaryExpression {
     public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
         getLeftOperand().compile(classWriter, methodVisitor);
         getRightOperand().compile(classWriter, methodVisitor);
-        methodVisitor.visitInsn(Opcodes.DNEG);
-        methodVisitor.visitInsn(Opcodes.DADD);
+        methodVisitor.visitInsn(Opcodes.FNEG);
+        methodVisitor.visitInsn(Opcodes.FADD);
     }
 }

@@ -22,19 +22,19 @@ public class NodeBothOf extends NodeBinaryExpression {
     @Override
     public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
         getLeftOperand().compile(classWriter, methodVisitor);
-        methodVisitor.visitInsn(Opcodes.DCONST_0);
-        methodVisitor.visitInsn(Opcodes.DCMPG);
+        methodVisitor.visitInsn(Opcodes.FCONST_0);
+        methodVisitor.visitInsn(Opcodes.FCMPG);
         getRightOperand().compile(classWriter, methodVisitor);
-        methodVisitor.visitInsn(Opcodes.DCONST_0);
-        methodVisitor.visitInsn(Opcodes.DCMPG);
-        methodVisitor.visitInsn(Opcodes.DCMPG);
+        methodVisitor.visitInsn(Opcodes.FCONST_0);
+        methodVisitor.visitInsn(Opcodes.FCMPG);
+        methodVisitor.visitInsn(Opcodes.FCMPG);
         Label lElse = new Label();
         Label lEnd = new Label();
         methodVisitor.visitJumpInsn(Opcodes.IFNE, lElse);
-        methodVisitor.visitInsn(Opcodes.DCONST_1);
+        methodVisitor.visitInsn(Opcodes.FCONST_1);
         methodVisitor.visitJumpInsn(Opcodes.GOTO, lEnd);
         methodVisitor.visitLabel(lElse);
-        methodVisitor.visitInsn(Opcodes.DCONST_0);
+        methodVisitor.visitInsn(Opcodes.FCONST_0);
         methodVisitor.visitLabel(lEnd);
     }
 }

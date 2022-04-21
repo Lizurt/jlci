@@ -30,16 +30,17 @@ public class NodeORly extends Node {
     @Override
     public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
         condition.compile(classWriter, methodVisitor);
-        methodVisitor.visitInsn(Opcodes.DCONST_1);
-        methodVisitor.visitInsn(Opcodes.DCMPL);
-        methodVisitor.visitInsn(Opcodes.DCONST_1);
+        methodVisitor.visitInsn(Opcodes.FCONST_0);
+        methodVisitor.visitInsn(Opcodes.FCMPG);
         Label lEnd = new Label();
         Label lElse = new Label();
         methodVisitor.visitJumpInsn(Opcodes.IFLT, nodeNoWai == null ? lEnd : lElse);
         nodeYaRly.compile(classWriter, methodVisitor);
+        methodVisitor.visitJumpInsn(Opcodes.GOTO, lEnd);
         if (nodeNoWai != null) {
             methodVisitor.visitLabel(lElse);
             nodeNoWai.compile(classWriter, methodVisitor);
+            methodVisitor.visitJumpInsn(Opcodes.GOTO, lEnd);
         }
         methodVisitor.visitLabel(lEnd);
     }

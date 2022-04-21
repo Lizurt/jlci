@@ -31,6 +31,6 @@ public class NodeVariable extends NodeIdentifier {
 
     @Override
     public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
-        methodVisitor.visitVarInsn(Opcodes.DLOAD, getScope().tryGetVariableByName(getName()).getIndex());
+        methodVisitor.visitVarInsn(Opcodes.FLOAD, getScope().tryGetVariableByName(getName()).getIndex());
     }
 }

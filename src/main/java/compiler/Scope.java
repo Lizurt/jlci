@@ -24,8 +24,8 @@ public class Scope {
         this.scopeManager = scopeManager;
     }
 
-    private Identifier tryGetIdentifierByName(String name, List<Identifier> identifiers) {
-        for (Identifier identifier : identifiers) {
+    public Identifier tryGetVariableByName(String name) {
+        for (Identifier identifier : getVariables()) {
             if (identifier.getName().equals(name)) {
                 return identifier;
             }
@@ -33,19 +33,31 @@ public class Scope {
         if (parentScope == null) {
             return null;
         }
-        return parentScope.tryGetIdentifierByName(name, identifiers);
-    }
-
-    public Identifier tryGetVariableByName(String name) {
-        return tryGetIdentifierByName(name, getVariables());
+        return parentScope.tryGetVariableByName(name);
     }
 
     public Identifier tryGetFunctionByName(String name) {
-        return tryGetIdentifierByName(name, getFunctions());
+        for (Identifier identifier : getFunctions()) {
+            if (identifier.getName().equals(name)) {
+                return identifier;
+            }
+        }
+        if (parentScope == null) {
+            return null;
+        }
+        return parentScope.tryGetFunctionByName(name);
     }
 
     public Identifier tryGetLabelByName(String name) {
-        return tryGetIdentifierByName(name, getLabels());
+        for (Identifier identifier : getLabels()) {
+            if (identifier.getName().equals(name)) {
+                return identifier;
+            }
+        }
+        if (parentScope == null) {
+            return null;
+        }
+        return parentScope.tryGetLabelByName(name);
     }
 
     public void unsafelyAddVariableToScope(Identifier identifier) {

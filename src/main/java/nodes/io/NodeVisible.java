@@ -1,10 +1,14 @@
 package nodes.io;
 
+import compiler.Compiler;
 import nodes.Node;
 import nodes.expression.NodeExpression;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 import parser.PatternConstants;
+
+import java.io.PrintStream;
 
 public class NodeVisible extends Node {
     private NodeExpression expression;
@@ -21,7 +25,15 @@ public class NodeVisible extends Node {
 
     @Override
     public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
-
+        methodVisitor.visitVarInsn(Opcodes.ALOAD, Compiler.ID_OUTPUT_STREAM);
+        expression.compile(classWriter, methodVisitor);
+        methodVisitor.visitMethodInsn(
+                Opcodes.INVOKEVIRTUAL,
+                PrintStream.class.getName().replace('.', '/'),
+                "println",
+                "(F)V",
+                false
+        );
     }
 
     public NodeExpression getExpression() {

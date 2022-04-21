@@ -22,6 +22,6 @@ public class NodeQuoshuntOf extends NodeBinaryExpression {
     public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
         getLeftOperand().compile(classWriter, methodVisitor);
         getRightOperand().compile(classWriter, methodVisitor);
-        methodVisitor.visitInsn(Opcodes.DDIV);
+        methodVisitor.visitInsn(Opcodes.FDIV);
     }
 }

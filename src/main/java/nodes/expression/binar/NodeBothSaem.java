@@ -24,11 +24,12 @@ public class NodeBothSaem extends NodeBinaryExpression {
         getRightOperand().compile(classWriter, methodVisitor);
         Label lElse = new Label();
         Label lEnd = new Label();
+        methodVisitor.visitInsn(Opcodes.FCMPG);
         methodVisitor.visitJumpInsn(Opcodes.IFNE, lElse);
-        methodVisitor.visitInsn(Opcodes.DCONST_1);
+        methodVisitor.visitInsn(Opcodes.FCONST_1);
         methodVisitor.visitJumpInsn(Opcodes.GOTO, lEnd);
         methodVisitor.visitLabel(lElse);
-        methodVisitor.visitInsn(Opcodes.DCONST_0);
+        methodVisitor.visitInsn(Opcodes.FCONST_0);
         methodVisitor.visitLabel(lEnd);
     }
 }
