@@ -31,9 +31,6 @@ public class ParserFunction extends PartialParser {
                 break;
             }
 
-//            if (getMainParser().isParse(PatternConstants.IF_U_SAY_SO, true, true)) {
-//                break;
-//            }
             Node funcChildStatement = getMainParser().tokenizeStatementAndProceed();
             nodeHowIzI.getStatements().addChild(funcChildStatement);
         }

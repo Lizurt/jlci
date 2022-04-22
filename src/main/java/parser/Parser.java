@@ -20,6 +20,7 @@ public class Parser {
     private ParserGimmeh parserGimmeh = new ParserGimmeh(this);
     private ParserAssignation parserAssignation = new ParserAssignation(this);
     private ParserFunction parserFunction = new ParserFunction(this);
+    private ParserCallingFunction parserCallingFunction = new ParserCallingFunction(this);
 
     public Parser(final String rawProgram) {
         this.rawProgram = rawProgram;
@@ -46,6 +47,9 @@ public class Parser {
     Node tokenizeStatementAndProceed() {
         if(isParse(PatternConstants.HOW_IZ_I, true, true)) {
             return parserFunction.parse();
+        }
+        if(isParse(PatternConstants.I_IZ, true, true)) {
+            return parserCallingFunction.parse();
         }
         if (isParse(PatternConstants.O_RLY, true, true)) {
             return parserIf.parse();

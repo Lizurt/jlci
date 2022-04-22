@@ -29,6 +29,7 @@ public abstract class PatternConstants {
     public static final String HAI = "HAI";
     public static final String IM_IN_YR = "IM IN YR";
     public static final String HOW_IZ_I = "HOW IZ I";
+    public static final String I_IZ = "I IZ";
 
     // unsouttable. These ones need only for syntax/semantic analysis, they won't be presented in asttree nor bytecode
     public static final String KTHXBYE = "KTHXBYE";
@@ -41,6 +42,7 @@ public abstract class PatternConstants {
     public static final String IF_U_SAY_SO = "IF U SAY SO";
     public static final String FOUND = "FOUND";
     public static final String GTFO = "GTFO";
+    public static final String MKAY = "MKAY";
 
     public static final HashMap<String, String> astTreeSoutDictionary = new HashMap<>();
     static {
@@ -101,6 +103,7 @@ public abstract class PatternConstants {
             astTreeSoutDictionary.put(IF_U_SAY_SO, IF_U_SAY_SO);
             astTreeSoutDictionary.put(FOUND, FOUND);
             astTreeSoutDictionary.put(GTFO, GTFO);
+            astTreeSoutDictionary.put(I_IZ, I_IZ);
         }
     }
 }
