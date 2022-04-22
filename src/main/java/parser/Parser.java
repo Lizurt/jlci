@@ -44,6 +44,9 @@ public class Parser {
     }
 
     Node tokenizeStatementAndProceed() {
+        if(isParse(PatternConstants.HOW_IZ_I, true, true)) {
+            return parserFunction.parse();
+        }
         if (isParse(PatternConstants.O_RLY, true, true)) {
             return parserIf.parse();
         }
@@ -59,9 +62,6 @@ public class Parser {
         parseExpression();
         if (isParse(PatternConstants.R, true, true)) {
             return parserAssignation.parse();
-        }
-        if(isParse(PatternConstants.HOW_IZ_I, true, true)) {
-            return parserFunction.parse();
         }
 
         return lastExpressionToken;
@@ -232,6 +232,8 @@ public class Parser {
         }
 
         for (int i = 0; i < text.length(); i++) {
+            char a = rawProgram.charAt(i + currPos + leftWhitespacesAmt);
+            char b = text.charAt(i);
             if (rawProgram.charAt(i + currPos + leftWhitespacesAmt) != text.charAt(i)) {
                 return false;
             }

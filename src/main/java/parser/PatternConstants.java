@@ -95,6 +95,8 @@ public abstract class PatternConstants {
             astTreeSoutDictionary.put(R, R);
             astTreeSoutDictionary.put(HAI, HAI);
             astTreeSoutDictionary.put(IM_IN_YR, IM_IN_YR);
+            astTreeSoutDictionary.put(HOW_IZ_I, HOW_IZ_I);
+            astTreeSoutDictionary.put(IF_U_SAY_SO, IF_U_SAY_SO);
         }
     }
 }

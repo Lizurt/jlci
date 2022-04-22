@@ -25,4 +25,10 @@ IM IN YR
         VISIBLE 1
         VISIBLE 2
 IM OUTTA YR NAME
+HOW IZ I
+        NAME
+        YR VAR
+        VARTOSUM R 2
+        VISIBLE SUM OF VARTOSUM AN VAR
+        IF U SAY SO
 KTHXBYE

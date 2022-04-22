@@ -19,7 +19,7 @@ public class ParserFunction extends PartialParser {
         nodeHowIzI.setFunctionName(functionName);
 
         if (!getMainParser().isParse(PatternConstants.YR, true, true)) {
-            throw new InputMismatchException("Missing " + PatternConstants.YR + " section in a loop at position: " + getMainParser().currPos + ".");
+            throw new InputMismatchException("Missing " + PatternConstants.YR + " section in a function at position: " + getMainParser().currPos + ".");
         }
         getMainParser().parse(PatternConstants.YR, true, true);
         Node varsInitNode = getMainParser().tokenizeStatementAndProceed();
@@ -28,16 +28,21 @@ public class ParserFunction extends PartialParser {
             if (getMainParser().isParse(PatternConstants.IF_U_SAY_SO, true, true)) {
                 break;
             }
-            Node loopChildStatement = getMainParser().tokenizeStatementAndProceed();
-            nodeHowIzI.getStatements().addChild(loopChildStatement);
+            Node funcChildStatement = getMainParser().tokenizeStatementAndProceed();
+            nodeHowIzI.getStatements().addChild(funcChildStatement);
         }
         if (!getMainParser().isParse(PatternConstants.IF_U_SAY_SO, true, true)) {
             throw new InputMismatchException(
-                    "Missing " + PatternConstants.IF_U_SAY_SO + " section in a loop at position: " + getMainParser().currPos + "."
+                    "Missing " + PatternConstants.IF_U_SAY_SO + " section in a function at position: " + getMainParser().currPos + "."
             );
         }
-        getMainParser().parse(PatternConstants.IM_OUTTA_YR, true, true);
+        if(getMainParser().isParse(PatternConstants.IF_U_SAY_SO, true, true)) {
+            getMainParser().parse(PatternConstants.IF_U_SAY_SO, true, true);
 
-        return nodeHowIzI;
+            return nodeHowIzI;
+        }
+        throw new InputMismatchException(
+                "Couldn't find " + PatternConstants.OIC + " node at position: " + getMainParser().currPos + "."
+        );
     }
 }

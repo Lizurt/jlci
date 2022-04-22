@@ -3,6 +3,7 @@ package nodes.function;
 import nodes.Node;
 import nodes.NodeStatements;
 import nodes.expression.indivisible.NodeIdentifier;
+import parser.PatternConstants;
 
 public class NodeHowIzI extends Node {
 
@@ -10,9 +11,15 @@ public class NodeHowIzI extends Node {
     private Node varsInit;
     private NodeStatements statements = new NodeStatements();
 
+    public NodeHowIzI() {
+        addChild(null);
+        addChild(null);
+        addChild(getStatements());
+    }
+
     @Override
     public String toString() {
-        return null;
+        return PatternConstants.astTreeSoutDictionary.get(PatternConstants.HOW_IZ_I);
     }
     public void setFunctionName(NodeIdentifier functionName) {
         getChildes().set(0, functionName);
@@ -24,7 +31,7 @@ public class NodeHowIzI extends Node {
     }
 
     public void setVarsInit(Node varsInit) {
-        getChildes().set(2, varsInit);
+        getChildes().set(1, varsInit);
         this.varsInit = varsInit;
     }
 
@@ -37,7 +44,7 @@ public class NodeHowIzI extends Node {
     }
 
     public void setStatements(NodeStatements statements) {
-        getChildes().set(3, statements);
+        getChildes().set(2, statements);
         this.statements = statements;
     }
 }
