@@ -1,6 +1,7 @@
 package parser;
 
 import nodes.Node;
+import nodes.NodeReturn;
 import nodes.expression.indivisible.NodeIdentifier;
 import nodes.function.NodeHowIzI;
 
@@ -25,12 +26,40 @@ public class ParserFunction extends PartialParser {
         Node varsInitNode = getMainParser().tokenizeStatementAndProceed();
         nodeHowIzI.setVarsInit(varsInitNode);
         while (true) {
-            if (getMainParser().isParse(PatternConstants.IF_U_SAY_SO, true, true)) {
+            if(getMainParser().isParse(PatternConstants.FOUND, true, true) ||
+               getMainParser().isParse(PatternConstants.GTFO, true, true)) {
                 break;
             }
+
+//            if (getMainParser().isParse(PatternConstants.IF_U_SAY_SO, true, true)) {
+//                break;
+//            }
             Node funcChildStatement = getMainParser().tokenizeStatementAndProceed();
             nodeHowIzI.getStatements().addChild(funcChildStatement);
         }
+        if (!getMainParser().isParse(PatternConstants.FOUND, true, true) &&
+            !getMainParser().isParse(PatternConstants.GTFO, true, true)) {
+            throw new InputMismatchException(
+                    "Missing " + PatternConstants.FOUND + " or " + PatternConstants.GTFO + " section in a function at position: " + getMainParser().currPos + "."
+            );
+        }
+
+        if(getMainParser().isParse(PatternConstants.FOUND, true, true)) {
+            getMainParser().parse(PatternConstants.FOUND, true, true);
+
+            if (!getMainParser().isParse(PatternConstants.YR, true, true)) {
+                throw new InputMismatchException("Missing " + PatternConstants.YR + " section in a return function at position: " + getMainParser().currPos + ".");
+            }
+
+            getMainParser().parse(PatternConstants.YR, true, true);
+            Node returnNode = getMainParser().tokenizeStatementAndProceed();
+            nodeHowIzI.getNodeReturn().addChild(returnNode);
+        }
+
+        if(getMainParser().isParse(PatternConstants.GTFO, true, true)) {
+            getMainParser().parse(PatternConstants.GTFO, true, true);
+        }
+
         if (!getMainParser().isParse(PatternConstants.IF_U_SAY_SO, true, true)) {
             throw new InputMismatchException(
                     "Missing " + PatternConstants.IF_U_SAY_SO + " section in a function at position: " + getMainParser().currPos + "."
@@ -42,7 +71,7 @@ public class ParserFunction extends PartialParser {
             return nodeHowIzI;
         }
         throw new InputMismatchException(
-                "Couldn't find " + PatternConstants.OIC + " node at position: " + getMainParser().currPos + "."
+                "Couldn't find " + PatternConstants.IF_U_SAY_SO + " node at position: " + getMainParser().currPos + "."
         );
     }
 }

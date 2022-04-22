@@ -39,6 +39,8 @@ public abstract class PatternConstants {
     public static final String IM_OUTTA_YR = "IM OUTTA YR";
     public static final String AN = "AN";
     public static final String IF_U_SAY_SO = "IF U SAY SO";
+    public static final String FOUND = "FOUND";
+    public static final String GTFO = "GTFO";
 
     public static final HashMap<String, String> astTreeSoutDictionary = new HashMap<>();
     static {
@@ -97,6 +99,8 @@ public abstract class PatternConstants {
             astTreeSoutDictionary.put(IM_IN_YR, IM_IN_YR);
             astTreeSoutDictionary.put(HOW_IZ_I, HOW_IZ_I);
             astTreeSoutDictionary.put(IF_U_SAY_SO, IF_U_SAY_SO);
+            astTreeSoutDictionary.put(FOUND, FOUND);
+            astTreeSoutDictionary.put(GTFO, GTFO);
         }
     }
 }
