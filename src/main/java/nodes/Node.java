@@ -6,6 +6,7 @@ import org.objectweb.asm.MethodVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Node {
     private final List<Node> childes = new ArrayList<>();
@@ -57,11 +58,28 @@ public abstract class Node {
         childes.add(child);
     }
 
+    public void removeChild(Node child) {
+        childes.remove(child);
+    }
+
     public Scope getScope() {
         return scope;
     }
 
     public void setScope(Scope scope) {
         this.scope = scope;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return Objects.equals(childes, node.childes) && Objects.equals(scope, node.scope);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(childes, scope);
     }
 }

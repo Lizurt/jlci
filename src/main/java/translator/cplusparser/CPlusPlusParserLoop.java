@@ -1,4 +1,4 @@
-package parser;
+package translator.cplusparser;
 
 import nodes.Node;
 import nodes.NodeAssignation;
@@ -6,11 +6,12 @@ import nodes.expression.NodeExpression;
 import nodes.expression.indivisible.identifiers.NodeIdentifier;
 import nodes.expression.indivisible.identifiers.NodeLabel;
 import nodes.loop.NodeImInYr;
+import parser.PatternConstants;
 
 import java.util.InputMismatchException;
 
-public class ParserLoop extends PartialParser {
-    public ParserLoop(Parser mainParser) {
+public class CPlusPlusParserLoop extends CPlusPartialParser {
+    public CPlusPlusParserLoop(CPlusParser mainParser) {
         super(mainParser);
     }
 

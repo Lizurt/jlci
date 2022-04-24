@@ -5,6 +5,9 @@ import parser.PatternConstants;
 public class NodeRoot extends NodeStatements {
     private String version;
 
+    public NodeRoot() {
+    }
+
     public NodeRoot(String version) {
         this.version = version;
     }
