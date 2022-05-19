@@ -39,10 +39,10 @@ public abstract class Node {
                 break;
             }
             if (i == childes.size() - 1 || childes.get(i + 1) == null) {
-                childes.get(i).toTreeishString(buffer, childPrefix + "└── ", childPrefix + "    ");
+                childes.get(i).toTreeishString(buffer, childPrefix + "L ", childPrefix + "  ");
                 continue;
             }
-            getChildes().get(i).toTreeishString(buffer, childPrefix + "├── ", childPrefix + "│   ");
+            getChildes().get(i).toTreeishString(buffer, childPrefix + "> ", childPrefix + "| ");
         }
     }
 

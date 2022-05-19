@@ -1,24 +1,28 @@
 package test;
 
 import compiler.Compiler;
-import compiler.DynamicClassLoader;
 import compiler.SemanticAnalyser;
 import nodes.NodeRoot;
 import parser.Parser;
+import translator.cplusparser.CPlusParser;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.nio.file.Paths;
 
-public class StartPoint {
+public class CompilerApp {
     private static final String MAIN_METHOD_NAME = "main";
 
     public static void main(String[] args) {
         try {
+            String baseDirPath = Paths.get("").toAbsolutePath().toString();
+            String srcDirPath = baseDirPath + "\\src\\main\\java\\test\\";
+            String pathToLCPFile = srcDirPath + "test.txt";
+            String compiledLCPFilePath = srcDirPath + "test.class";
+
+            /*
             String pathToLCPFile = "src/main/java/test/test.txt";
             String compiledLCPFilePath = "src/main/java/test/test.class";
+             */
             if (args.length > 0) {
                 pathToLCPFile = args[0];
                 compiledLCPFilePath = args[0].replace(".txt", ".class");
@@ -70,7 +74,7 @@ public class StartPoint {
                 to = i;
                 continue;
             }
-            if (path.charAt(i) == '/') {
+            if (path.charAt(i) == '/' || path.charAt(i) == '\\') {
                 return path.substring(i + 1, to);
             }
         }
