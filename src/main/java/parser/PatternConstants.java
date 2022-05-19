@@ -37,7 +37,7 @@ public abstract class PatternConstants {
 
     public static final HashMap<String, String> astTreeSoutDictionary = new HashMap<>();
     static {
-        boolean alternateSoutting = false;
+        boolean alternateSoutting = true;
         if (alternateSoutting) {
 // expressions
             astTreeSoutDictionary.put(SUM_OF, "+");
