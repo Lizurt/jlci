@@ -1,0 +1,6 @@
+d1 = AAA;
+d2 = abc + c;
+d3 = abc * c;
+d4 = abc / c;
+d5 = abc - c;
+return 0;

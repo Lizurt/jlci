@@ -1,26 +1,27 @@
 package parser;
 
-import nodes.*;
+import nodes.Node;
+import nodes.NodeAssignation;
+import nodes.NodeRoot;
 import nodes.expression.NodeExpression;
-import nodes.expression.indivisible.identifiers.NodeIdentifier;
-import nodes.expression.indivisible.NodeNumber;
 import nodes.expression.binar.*;
+import nodes.expression.indivisible.NodeNumber;
 import nodes.expression.indivisible.identifiers.NodeLabel;
 import nodes.expression.indivisible.identifiers.NodeVariable;
 import nodes.expression.unar.NodeUnaryExpression;
 
 import java.util.InputMismatchException;
 
-    public class Parser {
-        final String rawProgram;
-        int currPos = 0;
-        NodeExpression lastExpressionToken;
+public class Parser {
+    protected final String rawProgram;
+    int currPos = 0;
+    NodeExpression lastExpressionToken;
 
-        private ParserIf parserIf = new ParserIf(this);
-        private ParserLoop parserLoop = new ParserLoop(this);
-        private ParserVisible parserVisible = new ParserVisible(this);
-        private ParserGimmeh parserGimmeh = new ParserGimmeh(this);
-        private ParserAssignation parserAssignation = new ParserAssignation(this);
+    private final ParserIf parserIf = new ParserIf(this);
+    private final ParserLoop parserLoop = new ParserLoop(this);
+    private final ParserVisible parserVisible = new ParserVisible(this);
+    private final ParserGimmeh parserGimmeh = new ParserGimmeh(this);
+    private final ParserAssignation parserAssignation = new ParserAssignation(this);
 
     public Parser(final String rawProgram) {
         this.rawProgram = rawProgram;
@@ -44,7 +45,7 @@ import java.util.InputMismatchException;
         throw new InputMismatchException("\"" + PatternConstants.KTHXBYE + "\" is missing.");
     }
 
-    Node tokenizeStatementAndProceed() {
+    protected Node tokenizeStatementAndProceed() {
         if (isParse(PatternConstants.O_RLY, true, true)) {
             return parserIf.parse();
         }
@@ -66,13 +67,6 @@ import java.util.InputMismatchException;
     }
 
     NodeExpression parseExpression() {
-        // ===== UNARY =====
-        /*if (isParse("NOT", true, true)) {
-            parse("NOT", true, true);
-            return parseExpression(new TokenNot(null));
-        }*/
-        // ===== BINARY =====
-        // --- math --
         if (isParse(PatternConstants.SUM_OF, true, true)) {
             parse(PatternConstants.SUM_OF, true, true);
             return parseExpression(new NodeSumOf(null, null));
@@ -145,7 +139,7 @@ import java.util.InputMismatchException;
         return null;
     }
 
-    NodeNumber parseNumber() {
+    protected NodeNumber parseNumber() {
         consumeWhitespaces();
         boolean negate = false;
         if (rawProgram.charAt(currPos) == '-') {
@@ -180,7 +174,7 @@ import java.util.InputMismatchException;
         return result;
     }
 
-    NodeLabel parseLabel() {
+    public NodeLabel parseLabel() {
         consumeWhitespaces();
         int fromPos = currPos;
         parseIdentifierWhileLetterOrDigit();
@@ -192,7 +186,7 @@ import java.util.InputMismatchException;
         throw new InputMismatchException("Vars cannot contain such symbols: " + rawProgram.charAt(currPos) + ".");
     }
 
-    NodeVariable parseVariable() {
+    public NodeVariable parseVariable() {
         consumeWhitespaces();
         int fromPos = currPos;
         parseIdentifierWhileLetterOrDigit();
@@ -221,7 +215,7 @@ import java.util.InputMismatchException;
         return new NodeAssignation(variable, parseExpression());
     }
 
-    boolean isParse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {
+    public boolean isParse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {
         int leftWhitespacesAmt = 0;
         while (Character.isWhitespace(rawProgram.charAt(currPos + leftWhitespacesAmt))) {
             leftWhitespacesAmt++;

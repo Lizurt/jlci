@@ -17,7 +17,6 @@ public class NodeDiffrint extends NodeBinaryExpression {
     @Override
     public String toString() {
         return PatternConstants.astTreeSoutDictionary.get(PatternConstants.DIFFRINT);
-
     }
 
     @Override

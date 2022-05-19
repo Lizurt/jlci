@@ -1,7 +1,6 @@
 package parser;
 
 import nodes.Node;
-import parser.Parser;
 
 public abstract class PartialParser {
     private final Parser mainParser;

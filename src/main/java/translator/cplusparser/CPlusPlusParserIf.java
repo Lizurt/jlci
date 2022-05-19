@@ -1,14 +1,15 @@
-package parser;
+package translator.cplusparser;
 
 import nodes.Node;
 import nodes.condition.NodeNoWai;
 import nodes.condition.NodeORly;
 import nodes.condition.NodeYaRly;
+import parser.PatternConstants;
 
 import java.util.InputMismatchException;
 
-public class ParserIf extends PartialParser {
-    public ParserIf(Parser mainParser) {
+public class CPlusPlusParserIf extends CPlusPartialParser {
+    public CPlusPlusParserIf(CPlusParser mainParser) {
         super(mainParser);
     }
 

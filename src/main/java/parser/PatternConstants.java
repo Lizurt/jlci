@@ -36,10 +36,11 @@ public abstract class PatternConstants {
     public static final String AN = "AN";
 
     public static final HashMap<String, String> astTreeSoutDictionary = new HashMap<>();
+
     static {
         boolean alternateSoutting = true;
         if (alternateSoutting) {
-// expressions
+            // expressions
             astTreeSoutDictionary.put(SUM_OF, "+");
             astTreeSoutDictionary.put(DIFF_OF, "-");
             astTreeSoutDictionary.put(PRODUKT_OF, "*");
@@ -52,8 +53,8 @@ public abstract class PatternConstants {
             astTreeSoutDictionary.put(DIFFRINT, "!=");
 
             // other statements
-            astTreeSoutDictionary.put(VISIBLE, "cout");
-            astTreeSoutDictionary.put(GIMMEH, "cin");
+            astTreeSoutDictionary.put(VISIBLE, "cout <<");
+            astTreeSoutDictionary.put(GIMMEH, "cin >>");
             astTreeSoutDictionary.put(O_RLY, "if");
             astTreeSoutDictionary.put(YA_RLY, "then");
             astTreeSoutDictionary.put(NO_WAI, "else");
@@ -61,6 +62,8 @@ public abstract class PatternConstants {
             astTreeSoutDictionary.put(I_HAS_A, "=");
             astTreeSoutDictionary.put(HAI, "...");
             astTreeSoutDictionary.put(IM_IN_YR, "for");
+
+            astTreeSoutDictionary.put(KTHXBYE, "return 0;");
         } else {
             // expressions
             astTreeSoutDictionary.put(SUM_OF, SUM_OF);
