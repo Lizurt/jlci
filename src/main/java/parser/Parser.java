@@ -5,28 +5,31 @@ import nodes.expression.NodeExpression;
 import nodes.expression.indivisible.NodeIdentifier;
 import nodes.expression.indivisible.NodeNumber;
 import nodes.expression.binar.*;
+import nodes.expression.indivisible.NodeNumber;
+import nodes.expression.indivisible.identifiers.NodeLabel;
+import nodes.expression.indivisible.identifiers.NodeVariable;
 import nodes.expression.unar.NodeUnaryExpression;
 
 import java.util.InputMismatchException;
 
 public class Parser {
-    final String rawProgram;
+    protected final String rawProgram;
     int currPos = 0;
     NodeExpression lastExpressionToken;
 
-    private ParserIf parserIf = new ParserIf(this);
-    private ParserLoop parserLoop = new ParserLoop(this);
-    private ParserVisible parserVisible = new ParserVisible(this);
-    private ParserGimmeh parserGimmeh = new ParserGimmeh(this);
-    private ParserAssignation parserAssignation = new ParserAssignation(this);
-    private ParserFunction parserFunction = new ParserFunction(this);
-    private ParserCallingFunction parserCallingFunction = new ParserCallingFunction(this);
+    private final ParserIf parserIf = new ParserIf(this);
+    private final ParserLoop parserLoop = new ParserLoop(this);
+    private final ParserVisible parserVisible = new ParserVisible(this);
+    private final ParserGimmeh parserGimmeh = new ParserGimmeh(this);
+    private final ParserAssignation parserAssignation = new ParserAssignation(this);
+    private final ParserFunction parserFunction = new ParserFunction(this);
+    private final ParserCallingFunction parserCallingFunction = new ParserCallingFunction(this);
 
     public Parser(final String rawProgram) {
         this.rawProgram = rawProgram;
     }
 
-    public Node parse() {
+    public NodeRoot parse() {
         if (!isParse(PatternConstants.HAI, false, true)) {
             throw new InputMismatchException("\"" + PatternConstants.HAI + "\" is missing.");
         }
@@ -44,7 +47,7 @@ public class Parser {
         throw new InputMismatchException("\"" + PatternConstants.KTHXBYE + "\" is missing.");
     }
 
-    Node tokenizeStatementAndProceed() {
+    protected Node tokenizeStatementAndProceed() {
         if(isParse(PatternConstants.HOW_IZ_I, true, true)) {
             return parserFunction.parse();
         }
@@ -72,13 +75,6 @@ public class Parser {
     }
 
     NodeExpression parseExpression() {
-        // ===== UNARY =====
-        /*if (isParse("NOT", true, true)) {
-            parse("NOT", true, true);
-            return parseExpression(new TokenNot(null));
-        }*/
-        // ===== BINARY =====
-        // --- math --
         if (isParse(PatternConstants.SUM_OF, true, true)) {
             parse(PatternConstants.SUM_OF, true, true);
             return parseExpression(new NodeSumOf(null, null));
@@ -133,7 +129,7 @@ public class Parser {
         }
         if (isParse(PatternConstants.DIFFRINT, true, true)) {
             parse(PatternConstants.DIFFRINT, true, true);
-            return parseExpression(new NodeDifferInt(null, null));
+            return parseExpression(new NodeDiffrint(null, null));
         }
 
         int fakeWhitespacesSkipLen = 0;
@@ -143,12 +139,13 @@ public class Parser {
         if (
                 Character.isDigit(rawProgram.charAt(currPos + fakeWhitespacesSkipLen))
                         || rawProgram.charAt(currPos + fakeWhitespacesSkipLen) == '.'
+                        || rawProgram.charAt(currPos + fakeWhitespacesSkipLen) == '-'
         ) {
             return parseNumber();
         }
 
         if (Character.isLetter(rawProgram.charAt(currPos + fakeWhitespacesSkipLen))) {
-            return parseIdentifier();
+            return parseVariable();
         }
 
         throw new InputMismatchException(
@@ -174,8 +171,13 @@ public class Parser {
         return null;
     }
 
-    NodeNumber parseNumber() {
+    protected NodeNumber parseNumber() {
         consumeWhitespaces();
+        boolean negate = false;
+        if (rawProgram.charAt(currPos) == '-') {
+            negate = true;
+            currPos++;
+        }
         int fromPos = currPos;
         boolean alreadyHadDot = false;
         while (true) {
@@ -195,14 +197,40 @@ public class Parser {
             }
             break;
         }
-        NodeNumber result = new NodeNumber(Double.parseDouble(rawProgram.substring(fromPos, currPos)));
+        float value = Float.parseFloat(rawProgram.substring(fromPos, currPos));
+        if (negate) {
+            value = -value;
+        }
+        NodeNumber result = new NodeNumber(value);
         lastExpressionToken = result;
         return result;
     }
 
-    NodeIdentifier parseIdentifier() {
+    public NodeLabel parseLabel() {
         consumeWhitespaces();
         int fromPos = currPos;
+        parseIdentifierWhileLetterOrDigit();
+        if (Character.isWhitespace(rawProgram.charAt(currPos))) {
+            NodeLabel result = new NodeLabel(rawProgram.substring(fromPos, currPos));
+            lastExpressionToken = result;
+            return result;
+        }
+        throw new InputMismatchException("Vars cannot contain such symbols: " + rawProgram.charAt(currPos) + ".");
+    }
+
+    public NodeVariable parseVariable() {
+        consumeWhitespaces();
+        int fromPos = currPos;
+        parseIdentifierWhileLetterOrDigit();
+        if (Character.isWhitespace(rawProgram.charAt(currPos))) {
+            NodeVariable result = new NodeVariable(rawProgram.substring(fromPos, currPos));
+            lastExpressionToken = result;
+            return result;
+        }
+        throw new InputMismatchException("Vars cannot contain such symbols: " + rawProgram.charAt(currPos) + ".");
+    }
+
+    private void parseIdentifierWhileLetterOrDigit() {
         if (Character.isLetter(rawProgram.charAt(currPos))) {
             currPos++;
         } else {
@@ -213,19 +241,13 @@ public class Parser {
         while (Character.isLetterOrDigit(rawProgram.charAt(currPos))) {
             currPos++;
         }
-        if (Character.isWhitespace(rawProgram.charAt(currPos))) {
-            NodeIdentifier result = new NodeIdentifier(rawProgram.substring(fromPos, currPos));
-            lastExpressionToken = result;
-            return result;
-        }
-        throw new InputMismatchException("Vars cannot contain such symbols: " + rawProgram.charAt(currPos) + ".");
     }
 
-    NodeAssignation parseAssignation(NodeIdentifier identifier) {
-        return new NodeAssignation(identifier, parseExpression());
+    NodeAssignation parseAssignation(NodeVariable variable) {
+        return new NodeAssignation(variable, parseExpression());
     }
 
-    boolean isParse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {
+    public boolean isParse(String text, boolean requireLeftWhitespaces, boolean requireRightWhitespaces) {
         int leftWhitespacesAmt = 0;
         while (Character.isWhitespace(rawProgram.charAt(currPos + leftWhitespacesAmt))) {
             leftWhitespacesAmt++;

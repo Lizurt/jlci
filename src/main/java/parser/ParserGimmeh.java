@@ -1,7 +1,7 @@
 package parser;
 
 import nodes.Node;
-import nodes.expression.indivisible.NodeIdentifier;
+import nodes.expression.indivisible.identifiers.NodeIdentifier;
 import nodes.io.NodeGimmeh;
 
 public class ParserGimmeh extends PartialParser {
@@ -12,7 +12,7 @@ public class ParserGimmeh extends PartialParser {
     @Override
     public Node parse() {
         getMainParser().parse(PatternConstants.GIMMEH, true, true);
-        NodeIdentifier identifier = getMainParser().parseIdentifier();
+        NodeIdentifier identifier = getMainParser().parseVariable();
         return new NodeGimmeh(identifier);
     }
 }

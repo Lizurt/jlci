@@ -1,18 +1,20 @@
 package nodes.expression.binar;
 
+import nodes.expression.NodeExpression;
+
 import nodes.Node;
 import nodes.expression.NodeExpression;
 
 public abstract class NodeBinaryExpression extends NodeExpression {
-    private Node leftOperand;
-    private Node rightOperand;
+    private NodeExpression leftOperand;
+    private NodeExpression rightOperand;
     private boolean isANIgnorable;
 
-    public NodeBinaryExpression(Node leftOperand, Node rightOperand) {
+    public NodeBinaryExpression(NodeExpression leftOperand, NodeExpression rightOperand) {
         this(leftOperand, rightOperand, false);
     }
 
-    public NodeBinaryExpression(Node leftOperand, Node rightOperand, boolean isANIgnorable) {
+    public NodeBinaryExpression(NodeExpression leftOperand, NodeExpression rightOperand, boolean isANIgnorable) {
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
         addChild(leftOperand);
@@ -28,21 +30,29 @@ public abstract class NodeBinaryExpression extends NodeExpression {
         isANIgnorable = ANIgnorable;
     }
 
-    public Node getLeftOperand() {
+    public NodeExpression getLeftOperand() {
         return leftOperand;
     }
 
-    public void setLeftOperand(Node leftOperand) {
+    public void setLeftOperand(NodeExpression leftOperand) {
         this.leftOperand = leftOperand;
         getChildes().set(0, leftOperand);
     }
 
-    public Node getRightOperand() {
+    public NodeExpression getRightOperand() {
         return rightOperand;
     }
 
-    public void setRightOperand(Node rightOperand) {
+    public void setRightOperand(NodeExpression rightOperand) {
         this.rightOperand = rightOperand;
         getChildes().set(1, rightOperand);
+    }
+
+    @Override
+    public void checkAndFixSemantic() {
+        leftOperand.setScope(getScope());
+        rightOperand.setScope(getScope());
+        leftOperand.checkAndFixSemantic();;
+        rightOperand.checkAndFixSemantic();
     }
 }

@@ -36,10 +36,7 @@ public class ParserIf extends PartialParser {
             getMainParser().parse(PatternConstants.NO_WAI, true, true);
             NodeNoWai nodeNoWai = new NodeNoWai();
             nodeORly.setNodeNoWai(nodeNoWai);
-            while (true) {
-                if (getMainParser().isParse(PatternConstants.OIC, true, true)) {
-                    break;
-                }
+            while (!getMainParser().isParse(PatternConstants.OIC, true, true)) {
                 Node childStatement = getMainParser().tokenizeStatementAndProceed();
                 nodeNoWai.addChild(childStatement);
             }

@@ -1,11 +1,14 @@
 package nodes.expression.indivisible;
 
 import nodes.expression.NodeExpression;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 public class NodeNumber extends NodeExpression {
-    private double value;
+    private float value;
 
-    public NodeNumber(double value) {
+    public NodeNumber(float value) {
         this.value = value;
     }
 
@@ -14,11 +17,21 @@ public class NodeNumber extends NodeExpression {
         return String.valueOf(value);
     }
 
-    public double getValue() {
+    @Override
+    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
+        methodVisitor.visitLdcInsn(getValue());
+    }
+
+    @Override
+    public void checkAndFixSemantic() {
+
+    }
+
+    public float getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(float value) {
         this.value = value;
     }
 }

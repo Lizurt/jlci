@@ -1,8 +1,10 @@
 package parser;
 
 import nodes.Node;
+import nodes.NodeAssignation;
 import nodes.expression.NodeExpression;
-import nodes.expression.indivisible.NodeIdentifier;
+import nodes.expression.indivisible.identifiers.NodeIdentifier;
+import nodes.expression.indivisible.identifiers.NodeLabel;
 import nodes.loop.NodeImInYr;
 
 import java.util.InputMismatchException;
@@ -16,7 +18,7 @@ public class ParserLoop extends PartialParser {
     public Node parse() {
         getMainParser().parse(PatternConstants.IM_IN_YR, true, true);
         NodeImInYr nodeImInYr = new NodeImInYr();
-        NodeIdentifier loopName = getMainParser().parseIdentifier();
+        NodeLabel loopName = getMainParser().parseLabel();
         nodeImInYr.setLoopName(loopName);
         Node afterLoopAction = getMainParser().tokenizeStatementAndProceed();
         nodeImInYr.setAfterLoopAction(afterLoopAction);
@@ -25,7 +27,7 @@ public class ParserLoop extends PartialParser {
         }
         getMainParser().parse(PatternConstants.YR, true, true);
         Node varsInitNode = getMainParser().tokenizeStatementAndProceed();
-        nodeImInYr.setVarsInit(varsInitNode);
+        nodeImInYr.setVarInit((NodeAssignation) varsInitNode);
         if (!getMainParser().isParse(PatternConstants.WILE, true, true)) {
             throw new InputMismatchException(
                     "Missing " + PatternConstants.TIL + "/" + PatternConstants.WILE
@@ -35,10 +37,7 @@ public class ParserLoop extends PartialParser {
         getMainParser().parse(PatternConstants.WILE, true, true);
         NodeExpression loopCondition = getMainParser().parseExpression();
         nodeImInYr.setWhileCondition(loopCondition);
-        while (true) {
-            if (getMainParser().isParse(PatternConstants.IM_OUTTA_YR, true, true)) {
-                break;
-            }
+        while (!getMainParser().isParse(PatternConstants.IM_OUTTA_YR, true, true)) {
             Node loopChildStatement = getMainParser().tokenizeStatementAndProceed();
             nodeImInYr.getStatements().addChild(loopChildStatement);
         }
@@ -48,11 +47,11 @@ public class ParserLoop extends PartialParser {
             );
         }
         getMainParser().parse(PatternConstants.IM_OUTTA_YR, true, true);
-        NodeIdentifier loopEndName = getMainParser().parseIdentifier();
-        if (!loopEndName.getIdentifier().equals(nodeImInYr.getLoopName().getIdentifier())) {
+        NodeIdentifier loopEndName = getMainParser().parseLabel();
+        if (!loopEndName.getName().equals(nodeImInYr.getLoopName().getName())) {
             throw new InputMismatchException(
                     "Wrong label for a loop with a label: " + nodeImInYr
-                            + ". Found: " + loopEndName.getIdentifier() + "."
+                            + ". Found: \"" + loopEndName.getName() + "\"."
             );
         }
         return nodeImInYr;
