@@ -2,10 +2,9 @@ package parser;
 
 import nodes.*;
 import nodes.expression.NodeExpression;
-import nodes.expression.indivisible.NodeIdentifier;
+import nodes.expression.indivisible.identifiers.NodeIdentifier;
 import nodes.expression.indivisible.NodeNumber;
 import nodes.expression.binar.*;
-import nodes.expression.indivisible.NodeNumber;
 import nodes.expression.indivisible.identifiers.NodeLabel;
 import nodes.expression.indivisible.identifiers.NodeVariable;
 import nodes.expression.unar.NodeUnaryExpression;
@@ -91,18 +90,6 @@ public class Parser {
             parse(PatternConstants.QUOSHUNT_OF, true, true);
             return parseExpression(new NodeQuoshuntOf(null, null));
         }
-        if (isParse(PatternConstants.MOD_OF, true, true)) {
-            parse(PatternConstants.MOD_OF, true, true);
-            return parseExpression(new NodeModOf(null, null));
-        }
-        if (isParse(PatternConstants.BIGGER_OF, true, true)) {
-            parse(PatternConstants.BIGGER_OF, true, true);
-            return parseExpression(new NodeBiggerOf(null, null));
-        }
-        if (isParse(PatternConstants.SMALLER_OF, true, true)) {
-            parse(PatternConstants.SMALLER_OF, true, true);
-            return parseExpression(new NodeSmallerOf(null, null));
-        }
         if (isParse(PatternConstants.BOTH_OF, true, true)) {
             parse(PatternConstants.BOTH_OF, true, true);
             return parseExpression(new NodeBothOf(null, null));
@@ -110,18 +97,6 @@ public class Parser {
         if (isParse(PatternConstants.EITHER_OF, true, true)) {
             parse(PatternConstants.EITHER_OF, true, true);
             return parseExpression(new NodeEitherOf(null, null));
-        }
-        if (isParse(PatternConstants.WON_OF, true, true)) {
-            parse(PatternConstants.WON_OF, true, true);
-            return parseExpression(new NodeWonOf(null, null));
-        }
-        if (isParse(PatternConstants.ALL_OF, true, true)) {
-            parse(PatternConstants.ALL_OF, true, true);
-            return parseExpression(new NodeAllOf(null, null));
-        }
-        if (isParse(PatternConstants.ANY_OF, true, true)) {
-            parse(PatternConstants.ANY_OF, true, true);
-            return parseExpression(new NodeAnyOf(null, null));
         }
         if (isParse(PatternConstants.BOTH_SAEM, true, true)) {
             parse(PatternConstants.BOTH_SAEM, true, true);

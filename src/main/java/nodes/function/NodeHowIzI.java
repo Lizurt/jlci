@@ -1,9 +1,12 @@
 package nodes.function;
 
+import compiler.Scope;
 import nodes.Node;
 import nodes.NodeReturn;
 import nodes.NodeStatements;
-import nodes.expression.indivisible.NodeIdentifier;
+import nodes.expression.indivisible.identifiers.NodeIdentifier;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 import parser.PatternConstants;
 
 public class NodeHowIzI extends Node {
@@ -24,6 +27,17 @@ public class NodeHowIzI extends Node {
     public String toString() {
         return PatternConstants.astTreeSoutDictionary.get(PatternConstants.HOW_IZ_I);
     }
+
+    @Override
+    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
+
+    }
+
+    @Override
+    public void checkAndFixSemantic() {
+        Scope scope = new Scope(getScope());
+    }
+
     public void setFunctionName(NodeIdentifier functionName) {
         getChildes().set(0, functionName);
         this.functionName = functionName;

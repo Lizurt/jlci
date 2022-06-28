@@ -1,7 +1,9 @@
 package nodes.function;
 
 import nodes.Node;
-import nodes.expression.indivisible.NodeIdentifier;
+import nodes.expression.indivisible.identifiers.NodeIdentifier;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 import parser.PatternConstants;
 
 public class NodeIIZ extends Node {
@@ -17,6 +19,16 @@ public class NodeIIZ extends Node {
     @Override
     public String toString() {
         return PatternConstants.astTreeSoutDictionary.get(PatternConstants.I_IZ);
+    }
+
+    @Override
+    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
+
+    }
+
+    @Override
+    public void checkAndFixSemantic() {
+
     }
 
     public void setFunctionName(NodeIdentifier functionName) {

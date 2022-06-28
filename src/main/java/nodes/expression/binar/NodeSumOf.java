@@ -8,7 +8,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import parser.PatternConstants;
 
-public class NodeSumOf extends NodeBinaryExpression {
+public class NodeSumOf  {
     public NodeSumOf(NodeExpression leftOperand, NodeExpression rightOperand) {
         super(leftOperand, rightOperand);
     }
@@ -18,10 +18,4 @@ public class NodeSumOf extends NodeBinaryExpression {
         return PatternConstants.astTreeSoutDictionary.get(PatternConstants.SUM_OF);
     }
 
-    @Override
-    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
-        getLeftOperand().compile(classWriter, methodVisitor);
-        getRightOperand().compile(classWriter, methodVisitor);
-        methodVisitor.visitInsn(Opcodes.FADD);
-    }
 }

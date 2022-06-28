@@ -1,7 +1,7 @@
 package parser;
 
 import nodes.Node;
-import nodes.expression.indivisible.NodeIdentifier;
+import nodes.expression.indivisible.identifiers.NodeIdentifier;
 import nodes.function.NodeIIZ;
 
 import java.util.InputMismatchException;
@@ -15,7 +15,7 @@ public class ParserCallingFunction extends PartialParser {
     public Node parse() {
         getMainParser().parse(PatternConstants.I_IZ, true, true);
         NodeIIZ nodeIIZ = new NodeIIZ();
-        NodeIdentifier functionName = getMainParser().parseIdentifier();
+        NodeIdentifier functionName = getMainParser().parseVariable();
         nodeIIZ.setFunctionName(functionName);
 
         if (!getMainParser().isParse(PatternConstants.YR, true, true)) {
