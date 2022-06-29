@@ -8,7 +8,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import parser.PatternConstants;
 
-public class NodeQuoshuntOf extends NodeBinaryExpression {
+public class NodeQuoshuntOf {
     public NodeQuoshuntOf(NodeExpression leftOperand, NodeExpression rightOperand) {
         super(leftOperand, rightOperand);
     }
@@ -18,10 +18,4 @@ public class NodeQuoshuntOf extends NodeBinaryExpression {
         return PatternConstants.astTreeSoutDictionary.get(PatternConstants.QUOSHUNT_OF);
     }
 
-    @Override
-    public void compile(ClassWriter classWriter, MethodVisitor methodVisitor) {
-        getLeftOperand().compile(classWriter, methodVisitor);
-        getRightOperand().compile(classWriter, methodVisitor);
-        methodVisitor.visitInsn(Opcodes.FDIV);
-    }
 }
