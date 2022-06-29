@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Main {
+public class TranslatorApp {
     public static void main(String[] args) {
         testTranslator();
 //        try {

@@ -52,7 +52,7 @@ public class Compiler {
         methodVisitor = classWriter.visitMethod(
                 Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC,
                 methodName,
-                "()V",
+                "([Ljava/lang/String;)V",
                 null,
                 null
         );
